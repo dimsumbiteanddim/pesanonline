@@ -1,0 +1,20 @@
+{
+  "name": "Bite & Dim Menu",
+  "short_name": "Bite&Dim",
+  "start_url": "/menupesanonline/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "Favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
