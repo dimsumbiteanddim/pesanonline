@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bite & Dim App</title>
 
+  <!-- PWA Manifest & Favicon -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="Favicon.png">
+  <meta name="theme-color" content="#10b981">
+
   <!-- Google Font: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
@@ -26,7 +31,7 @@
       min-height: 100vh;
     }
 
-    /* 🟢 STYLING AUTH / LOGIN CARD */
+    /* STYLING AUTH / LOGIN CARD */
     .auth-wrapper {
       display: flex;
       justify-content: center;
@@ -152,7 +157,7 @@
       color: #1e293b;
     }
 
-    /* 🛍️ STYLING APP LAYOUT & KATALOG */
+    /* STYLING APP LAYOUT & KATALOG */
     .user-bar {
       background: #ffffff;
       padding: 12px 24px;
@@ -226,12 +231,63 @@
       background: #fff;
       border-radius: 12px;
       padding: 15px 20px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 700;
       color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .menu-list-container {
+      display: none;
+      background: #ffffff;
+      border-radius: 0 0 12px 12px;
+      padding: 10px 15px;
+      margin-top: -8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item-info h4 {
+      font-size: 14px;
+      color: #1e293b;
+    }
+
+    .menu-item-info span {
+      font-size: 13px;
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .btn-qty-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-qty {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: none;
+      background: #10b981;
+      color: white;
+      font-weight: 700;
       cursor: pointer;
     }
 
@@ -250,6 +306,15 @@
       padding-bottom: 10px;
     }
 
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
     .btn-checkout {
       width: 100%;
       background: #10b981;
@@ -262,15 +327,18 @@
       cursor: pointer;
       margin-top: 15px;
     }
+
+    .btn-checkout:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🔒 1. FORM LOGIN & REGISTER (MENGGUNAKAN NO HP) -->
+  <!-- 🔒 1. FORM LOGIN & REGISTER -->
   <div class="auth-wrapper" id="auth-box">
     <div class="auth-card">
-      
-      <!-- Logo + Judul Sejajar -->
       <div class="auth-header-inline">
         <img src="Favicon.png" alt="Bite & Dim Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/dimsumbiteanddim/pesanonline/main/Favicon.png';">
         <div class="auth-title-group">
@@ -297,7 +365,7 @@
   </div>
 
 
-  <!-- 🔓 2. TAMPILAN KATALOG (TAMPIL SETELAH LOGIN) -->
+  <!-- 🔓 2. TAMPILAN KATALOG -->
   <div id="app-box" style="display:none;">
     
     <!-- User Bar Atas -->
@@ -317,45 +385,24 @@
       <p style="margin-top: 5px; color: #475569; font-weight: 400;">Silahkan Pilih Menu Kesukaan Anda.</p>
     </div>
 
-    <!-- Main Container (Katalog & Keranjang) -->
+    <!-- Main Container -->
     <div class="main-container">
 
       <!-- Banner PWA / Install -->
-      <div class="banner-install">
+      <div class="banner-install" id="pwa-banner" style="display: none;">
         <span>📲 <strong>Aplikasi Siap Diinstal</strong></span>
-        <button class="btn-install">Install</button>
+        <button class="btn-install" id="btn-pwa-install">Install</button>
       </div>
 
       <!-- SISI KIRI: DAFTAR MENU -->
       <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
           <h3 style="color: #334155;">🍽️ Pilih Kartu Menu Favoritmu:</h3>
-          <span style="color: #10b981; font-size: 13px; font-weight: 600;">🟢 Live Sync Dapur</span>
+          <span style="color: #10b981; font-size: 13px; font-weight: 600;" id="sync-status">🟢 Live Sync Dapur</span>
         </div>
 
-        <div class="menu-category" style="background: #f59e0b;">
-          <span>📦 Dimsum Original</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
-        </div>
-
-        <div class="menu-category" style="background: #f97316;">
-          <span>📦 Dimsum Mentai</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
-        </div>
-
-        <div class="menu-category" style="background: #eab308;">
-          <span>📦 Dimsum Keju</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
-        </div>
-
-        <div class="menu-category" style="background: #10b981;">
-          <span>📦 Dimsum Mix</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">3 pilihan ▼</span>
-        </div>
-
-        <div class="menu-category" style="background: #ef4444;">
-          <span>📦 Paket Dimsum Goreng</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
+        <div id="menu-accordion-wrapper">
+          <p style="text-align: center; color: #64748b; padding: 20px;">Memuat menu dari dapur...</p>
         </div>
       </div>
 
@@ -366,7 +413,7 @@
 
           <div class="form-group">
             <label style="color: #ef4444;">Nama Anda *</label>
-            <input type="text" class="form-control" placeholder="Masukkan nama pemesan">
+            <input type="text" id="cart-name" class="form-control" placeholder="Masukkan nama pemesan">
           </div>
 
           <div class="form-group">
@@ -374,14 +421,16 @@
             <input type="text" id="cart-phone" class="form-control" placeholder="Contoh: 08123456789">
           </div>
 
-          <p style="text-align: center; color: #94a3b8; margin: 30px 0; font-size: 13px;">Keranjang masih kosong, Bro.</p>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 18px; color: #1e293b;">
-            <span>Total:</span>
-            <span style="color: #f97316;">Rp 0</span>
+          <div id="cart-items-container">
+            <p style="text-align: center; color: #94a3b8; margin: 30px 0; font-size: 13px;">Keranjang masih kosong, Bro.</p>
           </div>
 
-          <button class="btn-checkout">✓ SELESAIKAN PESANAN</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 18px; color: #1e293b; margin-top: 15px; border-top: 2px solid #f1f5f9; padding-top: 10px;">
+            <span>Total:</span>
+            <span style="color: #f97316;" id="cart-total-text">Rp 0</span>
+          </div>
+
+          <button class="btn-checkout" id="btn-submit-order" onclick="submitOrder()">✓ SELESAIKAN PESANAN</button>
         </div>
       </div>
 
@@ -389,7 +438,7 @@
   </div>
 
 
-  <!-- ⚙️ 3. SCRIPT FIREBASE & UTILS -->
+  <!-- ⚙️ 3. SCRIPT LOGIC -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAn6IvlqZAOXKJtL6mWjfEqO0v4IbAsuXs",
@@ -408,29 +457,59 @@
     const auth = firebase.auth();
     const messaging = firebase.messaging();
 
-    // Fungsi Pembantu Format No HP ke Format Internal Firebase
-    function formatPhoneToEmail(phone) {
-      let cleaned = phone.replace(/[^0-9]/g, ''); // Hapus karakter selain angka
-      if (cleaned.startsWith('62')) {
-        cleaned = '0' + cleaned.slice(2);
+    let rawMenuData = [];
+    let cart = {}; 
+    let deferredPrompt = null;
+
+    // --- PWA INSTALL PROMPT HANDLER ---
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwa-banner');
+      if (banner) banner.style.display = 'flex';
+    });
+
+    document.getElementById('btn-pwa-install')?.addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwa-banner').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
       }
+    });
+
+    // Helper Format HP & Currency
+    function formatPhoneToEmail(phone) {
+      let cleaned = phone.replace(/[^0-9]/g, '');
+      if (cleaned.startsWith('62')) cleaned = '0' + cleaned.slice(2);
       return `${cleaned}@biteanddim.com`;
     }
 
+    function formatRupiah(number) {
+      return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    // --- AUTHENTICATION OBSERVER ---
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('auth-box').style.display = 'none';
         document.getElementById('app-box').style.display = 'block';
 
-        // Tampilkan No HP asli di header (menghilangkan domain internal @biteanddim.com)
         const rawPhone = user.email ? user.email.split('@')[0] : 'Pelanggan';
         document.getElementById('user-display').innerText = rawPhone;
 
-        // Auto-fill No HP di form keranjang belanja
         const cartPhoneInput = document.getElementById('cart-phone');
-        if (cartPhoneInput && rawPhone) {
-          cartPhoneInput.value = rawPhone;
+        if (cartPhoneInput && rawPhone) cartPhoneInput.value = rawPhone;
+
+        // Register Service Worker & Load Menu Data
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./sw.js').catch(err => console.error("SW Registration failed:", err));
         }
+        fetchMenuFromBackend();
+
       } else {
         document.getElementById('auth-box').style.display = 'flex';
         document.getElementById('app-box').style.display = 'none';
@@ -442,9 +521,7 @@
       const p = document.getElementById('password').value;
       if(!phoneInput || !p) return alert("Silakan isi nomor HP dan password!");
 
-      const formattedEmail = formatPhoneToEmail(phoneInput);
-
-      auth.createUserWithEmailAndPassword(formattedEmail, p)
+      auth.createUserWithEmailAndPassword(formatPhoneToEmail(phoneInput), p)
         .then(() => alert("Registrasi Berhasil! Silakan klik Login."))
         .catch(err => alert("Gagal Register: " + err.message));
     }
@@ -454,9 +531,7 @@
       const p = document.getElementById('password').value;
       if(!phoneInput || !p) return alert("Silakan masukkan nomor HP dan password!");
 
-      const formattedEmail = formatPhoneToEmail(phoneInput);
-
-      auth.signInWithEmailAndPassword(formattedEmail, p)
+      auth.signInWithEmailAndPassword(formatPhoneToEmail(phoneInput), p)
         .then(() => alert("Login Berhasil!"))
         .catch(err => alert("Gagal Login: " + err.message));
     }
@@ -465,7 +540,197 @@
       auth.signOut();
     }
 
+    // --- FETCH & RENDER MENU ---
+    function fetchMenuFromBackend() {
+      fetch(APPS_SCRIPT_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.menu) {
+            rawMenuData = data.menu;
+            renderMenuCategories(data.menu);
+          }
+        })
+        .catch(err => {
+          console.error("Gagal load menu:", err);
+          document.getElementById('menu-accordion-wrapper').innerHTML = '<p style="color: red; text-align: center;">Gagal memuat menu. Periksa koneksi internet.</p>';
+        });
+    }
+
+    function renderMenuCategories(menuList) {
+      const wrapper = document.getElementById('menu-accordion-wrapper');
+      wrapper.innerHTML = '';
+
+      const categories = [
+        { name: 'Dimsum Original', color: '#f59e0b', keyword: 'original' },
+        { name: 'Dimsum Mentai', color: '#f97316', keyword: 'mentai' },
+        { name: 'Dimsum Keju', color: '#eab308', keyword: 'keju' },
+        { name: 'Dimsum Mix', color: '#10b981', keyword: 'mix' },
+        { name: 'Paket Dimsum Goreng', color: '#ef4444', keyword: 'goreng' },
+        { name: 'Tahu Bakso', color: '#8b5cf6', keyword: 'tahu' }
+      ];
+
+      categories.forEach((cat, index) => {
+        const filtered = menuList.filter(item => {
+          const lower = item.produk.toLowerCase();
+          if (cat.keyword === 'original') return lower.includes('original') || lower.includes('ori') || lower.includes('polos');
+          return lower.includes(cat.keyword);
+        });
+
+        if (filtered.length === 0) return;
+
+        const catHeader = document.createElement('div');
+        catHeader.className = 'menu-category';
+        catHeader.style.background = cat.color;
+        catHeader.innerHTML = `
+          <span>📦 ${cat.name}</span>
+          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">${filtered.length} pilihan ▼</span>
+        `;
+
+        const listContainer = document.createElement('div');
+        listContainer.className = 'menu-list-container';
+        listContainer.id = `cat-container-${index}`;
+
+        filtered.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'menu-item';
+          itemEl.innerHTML = `
+            <div class="menu-item-info">
+              <h4>${item.produk}</h4>
+              <span>${formatRupiah(item.harga)}</span>
+              <small style="display:block; color: #64748b; font-size: 11px;">Stok Tersedia: ${item.stok} porsi</small>
+            </div>
+            <div class="btn-qty-box">
+              <button class="btn-qty" onclick="updateCart('${item.produk}', ${item.harga}, -1, ${item.stok})">-</button>
+              <span id="qty-${item.produk.replace(/\s+/g, '-')}" style="font-weight: 700; font-size: 14px;">0</span>
+              <button class="btn-qty" onclick="updateCart('${item.produk}', ${item.harga}, 1, ${item.stok})">+</button>
+            </div>
+          `;
+          listContainer.appendChild(itemEl);
+        });
+
+        catHeader.addEventListener('click', () => {
+          const isVisible = listContainer.style.display === 'block';
+          listContainer.style.display = isVisible ? 'none' : 'block';
+        });
+
+        wrapper.appendChild(catHeader);
+        wrapper.appendChild(listContainer);
+      });
+    }
+
+    // --- KERANJANG BELANJA LOGIC ---
+    function updateCart(produk, harga, change, maxStok) {
+      if (!cart[produk]) cart[produk] = { qty: 0, harga: harga };
+      
+      let newQty = cart[produk].qty + change;
+      if (newQty > maxStok) {
+        alert(`Maaf, stok ${produk} hanya tersisa ${maxStok} porsi!`);
+        return;
+      }
+
+      if (newQty <= 0) {
+        delete cart[produk];
+        newQty = 0;
+      } else {
+        cart[produk].qty = newQty;
+      }
+
+      const qtySpan = document.getElementById(`qty-${produk.replace(/\s+/g, '-')}`);
+      if (qtySpan) qtySpan.innerText = newQty;
+
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const totalText = document.getElementById('cart-total-text');
+      const keys = Object.keys(cart);
+
+      if (keys.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #94a3b8; margin: 30px 0; font-size: 13px;">Keranjang masih kosong, Bro.</p>';
+        totalText.innerText = 'Rp 0';
+        return;
+      }
+
+      let html = '';
+      let grandTotal = 0;
+
+      keys.forEach(key => {
+        const item = cart[key];
+        const subtotal = item.qty * item.harga;
+        grandTotal += subtotal;
+
+        html += `
+          <div class="cart-item-row">
+            <span><strong>${key}</strong> (${item.qty}x)</span>
+            <span>${formatRupiah(subtotal)}</span>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      totalText.innerText = formatRupiah(grandTotal);
+    }
+
+    // --- SUBMIT PESANAN ONLINE ---
+    function submitOrder() {
+      const name = document.getElementById('cart-name').value.trim();
+      const phone = document.getElementById('cart-phone').value.trim();
+      const itemsKey = Object.keys(cart);
+
+      if (!name) return alert("Silakan masukkan Nama Pemesan!");
+      if (!phone) return alert("Silakan masukkan Nomor HP/WA!");
+      if (itemsKey.length === 0) return alert("Keranjang belanja kamu masih kosong!");
+
+      const itemsPayload = itemsKey.map(k => ({
+        produk: k,
+        qty: cart[k].qty,
+        harga: cart[k].harga,
+        subtotal: cart[k].qty * cart[k].harga
+      }));
+
+      const grandTotal = itemsPayload.reduce((sum, i) => sum + i.subtotal, 0);
+
+      const btnSubmit = document.getElementById('btn-submit-order');
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Mengirim Pesanan...";
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: "onlineOrder",
+          nama: name,
+          nomorWA: phone,
+          items: itemsPayload,
+          total: grandTotal
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert("🎉 Pesanan berhasil dikirim ke Dapur! Silakan tunggu konfirmasi Kasir.");
+          cart = {};
+          renderCart();
+          fetchMenuFromBackend(); // Refresh stok
+          
+          // Minta Notifikasi secara otomatis setelah memesan
+          enableNotifications();
+        } else {
+          alert("Gagal membuat pesanan: " + data.message);
+        }
+      })
+      .catch(err => alert("Error mengirim pesanan: " + err.message))
+      .finally(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "✓ SELESAIKAN PESANAN";
+      });
+    }
+
+    // --- NOTIFIKASI FCM HANDLER ---
     function enableNotifications() {
+      if (!('Notification' in window)) return;
+
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           navigator.serviceWorker.register('./sw.js')
@@ -476,15 +741,11 @@
               });
             })
             .then((token) => {
-              if (token) {
+              if (token && auth.currentUser) {
                 saveTokenToBackend(auth.currentUser.email, token);
-              } else {
-                alert("Gagal mendapatkan FCM Token.");
               }
             })
-            .catch(err => alert("Error Token: " + err.message));
-        } else {
-          alert('Izin notifikasi ditolak!');
+            .catch(err => console.error("Error Token:", err));
         }
       });
     }
@@ -500,8 +761,8 @@
         })
       })
       .then(res => res.json())
-      .then(data => alert("Notifikasi berhasil diaktifkan!"))
-      .catch(err => console.error("Error Apps Script:", err));
+      .then(data => console.log("Token FCM berhasil disimpan."))
+      .catch(err => console.error("Error Apps Script Token:", err));
     }
   </script>
 </body>
