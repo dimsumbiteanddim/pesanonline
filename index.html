@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bite & Dim App</title>
+  <title>Bite & Dim - Order Online</title>
+  <link rel="icon" href="Favicon.png">
 
   <!-- Google Font: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Firebase Compatibility SDKs -->
+  <!-- Firebase SDK Compatibility -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
@@ -24,9 +25,10 @@
     body {
       background-color: #f4f7f6;
       min-height: 100vh;
+      color: #334155;
     }
 
-    /* 🟢 STYLING AUTH / LOGIN CARD */
+    /* 🔒 AUTH SECTION */
     .auth-wrapper {
       display: flex;
       justify-content: center;
@@ -41,7 +43,7 @@
       max-width: 420px;
       padding: 35px 30px;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     }
 
     .auth-header-inline {
@@ -50,7 +52,6 @@
       justify-content: center;
       gap: 15px;
       margin-bottom: 25px;
-      text-align: left;
     }
 
     .auth-logo {
@@ -59,17 +60,10 @@
       object-fit: contain;
     }
 
-    .auth-title-group {
-      display: flex;
-      flex-direction: column;
-    }
-
     .auth-title {
       color: #10b981;
       font-weight: 800;
       font-size: 24px;
-      letter-spacing: 0.5px;
-      margin-bottom: 2px;
       line-height: 1.1;
     }
 
@@ -77,8 +71,6 @@
       color: #64748b;
       font-size: 11px;
       font-weight: 700;
-      margin-bottom: 0;
-      letter-spacing: 0.3px;
     }
 
     .form-group {
@@ -136,10 +128,7 @@
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
-    .btn-primary:hover {
-      background-color: #059669;
-      transform: translateY(-1px);
-    }
+    .btn-primary:hover { background-color: #059669; }
 
     .btn-secondary {
       background-color: #f1f5f9;
@@ -147,12 +136,7 @@
       border: 2px solid #e2e8f0;
     }
 
-    .btn-secondary:hover {
-      background-color: #e2e8f0;
-      color: #1e293b;
-    }
-
-    /* 🛍️ STYLING APP LAYOUT & KATALOG */
+    /* 🛍️ MAIN APP SECTION */
     .user-bar {
       background: #ffffff;
       padding: 12px 24px;
@@ -168,25 +152,11 @@
       margin-bottom: 20px;
     }
 
-    .header-app img {
-      width: 90px;
-      height: 90px;
-    }
-
-    .header-app h1 {
-      color: #10b981;
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .header-app p {
-      color: #64748b;
-      font-size: 14px;
-      font-weight: 600;
-    }
+    .header-app img { width: 80px; height: 80px; }
+    .header-app h1 { color: #10b981; font-size: 26px; font-weight: 800; }
 
     .main-container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 20px 40px;
       display: grid;
@@ -194,47 +164,36 @@
       gap: 20px;
     }
 
-    @media (max-width: 900px) {
-      .main-container {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 850px) {
+      .main-container { grid-template-columns: 1fr; }
     }
 
-    .banner-install {
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 12px 20px;
-      border-radius: 12px;
+    /* MENU CARD STYLING */
+    .menu-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      grid-column: 1 / -1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .btn-install {
+    .menu-info h4 { font-size: 16px; color: #1e293b; }
+    .menu-info p { font-size: 14px; color: #f97316; font-weight: 700; }
+
+    .btn-add {
       background: #10b981;
       color: white;
       border: none;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .menu-category {
-      background: #fff;
-      border-radius: 12px;
-      padding: 15px 20px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-    }
-
+    /* CART BOX */
     .cart-box {
       background: #fff;
       padding: 20px;
@@ -250,6 +209,13 @@
       padding-bottom: 10px;
     }
 
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
     .btn-checkout {
       width: 100%;
       background: #10b981;
@@ -262,25 +228,66 @@
       cursor: pointer;
       margin-top: 15px;
     }
+
+    /* 💳 MODAL QRIS PEMBAYARAN */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .qris-img {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      margin: 15px 0;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    /* ⏳ STATUS TRACKING */
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fef3c7;
+      color: #d97706;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🔒 1. FORM LOGIN & REGISTER (MENGGUNAKAN NO HP) -->
+  <!-- 🔒 1. HALAMAN LOGIN / REGISTER -->
   <div class="auth-wrapper" id="auth-box">
     <div class="auth-card">
-      
-      <!-- Logo + Judul Sejajar -->
       <div class="auth-header-inline">
         <img src="Favicon.png" alt="Bite & Dim Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/dimsumbiteanddim/pesanonline/main/Favicon.png';">
-        <div class="auth-title-group">
+        <div>
           <h2 class="auth-title">BITE & DIM</h2>
           <p class="auth-subtitle">SIAP BIKIN KETAGIHAN</p>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="phone">Nomor HP / WhatsApp</label>
+        <label for="phone">Nomor WhatsApp / HP</label>
         <input type="tel" id="phone" class="form-control" placeholder="Contoh: 08123456789">
       </div>
 
@@ -297,91 +304,95 @@
   </div>
 
 
-  <!-- 🔓 2. TAMPILAN KATALOG (TAMPIL SETELAH LOGIN) -->
+  <!-- 🔓 2. HALAMAN UTAMA APLIKASI (PWA) -->
   <div id="app-box" style="display:none;">
     
-    <!-- User Bar Atas -->
+    <!-- Header Top Bar -->
     <div class="user-bar">
-      <span style="color: #334155; font-weight: 600;">Selamat Datang, <strong id="user-display" style="color: #10b981;"></strong></span>
+      <span>Halo, <strong id="user-display" style="color: #10b981;"></strong></span>
       <div>
-        <button onclick="enableNotifications()" style="background: #10b981; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 8px;">Aktifkan Notifikasi 🔔</button>
-        <button onclick="doLogout()" style="background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer;">Logout</button>
+        <button onclick="enableNotifications()" style="background: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 5px;">Notifikasi 🔔</button>
+        <button onclick="doLogout()" style="background: #ef4444; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Logout</button>
       </div>
     </div>
 
-    <!-- Header Logo Toko -->
     <div class="header-app">
       <img src="Favicon.png" alt="Bite & Dim Logo" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/dimsumbiteanddim/pesanonline/main/Favicon.png';">
       <h1>BITE & DIM</h1>
-      <p>SIAP BIKIN KETAGIHAN</p>
-      <p style="margin-top: 5px; color: #475569; font-weight: 400;">Silahkan Pilih Menu Kesukaan Anda.</p>
+      <p style="color: #64748b; font-size: 13px;">Silahkan pilih menu dimsum favoritmu!</p>
     </div>
 
-    <!-- Main Container (Katalog & Keranjang) -->
     <div class="main-container">
 
-      <!-- Banner PWA / Install -->
-      <div class="banner-install">
-        <span>📲 <strong>Aplikasi Siap Diinstal</strong></span>
-        <button class="btn-install">Install</button>
-      </div>
-
-      <!-- SISI KIRI: DAFTAR MENU -->
+      <!-- KATALOG MENU -->
       <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-          <h3 style="color: #334155;">🍽️ Pilih Kartu Menu Favoritmu:</h3>
-          <span style="color: #10b981; font-size: 13px; font-weight: 600;">🟢 Live Sync Dapur</span>
+        <h3 style="margin-bottom: 15px;">🥟 Menu Dimsum Populer</h3>
+
+        <div class="menu-card">
+          <div class="menu-info">
+            <h4>Dimsum Original (4 Pcs)</h4>
+            <p>Rp 15.000</p>
+          </div>
+          <button class="btn-add" onclick="addToCart('Dimsum Original', 15000)">+ Tambah</button>
         </div>
 
-        <div class="menu-category" style="background: #f59e0b;">
-          <span>📦 Dimsum Original</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
+        <div class="menu-card">
+          <div class="menu-info">
+            <h4>Dimsum Mentai (4 Pcs)</h4>
+            <p>Rp 18.000</p>
+          </div>
+          <button class="btn-add" onclick="addToCart('Dimsum Mentai', 18000)">+ Tambah</button>
         </div>
 
-        <div class="menu-category" style="background: #f97316;">
-          <span>📦 Dimsum Mentai</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
+        <div class="menu-card">
+          <div class="menu-info">
+            <h4>Dimsum Keju Lumer (4 Pcs)</h4>
+            <p>Rp 18.000</p>
+          </div>
+          <button class="btn-add" onclick="addToCart('Dimsum Keju Lumer', 18000)">+ Tambah</button>
         </div>
 
-        <div class="menu-category" style="background: #eab308;">
-          <span>📦 Dimsum Keju</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
+        <div class="menu-card">
+          <div class="menu-info">
+            <h4>Dimsum Mix Party (10 Pcs)</h4>
+            <p>Rp 38.000</p>
+          </div>
+          <button class="btn-add" onclick="addToCart('Dimsum Mix Party', 38000)">+ Tambah</button>
         </div>
 
-        <div class="menu-category" style="background: #10b981;">
-          <span>📦 Dimsum Mix</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">3 pilihan ▼</span>
-        </div>
-
-        <div class="menu-category" style="background: #ef4444;">
-          <span>📦 Paket Dimsum Goreng</span>
-          <span style="font-size: 12px; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px;">4 pilihan ▼</span>
+        <!-- AREA TRACKING PESANAN AKTIF -->
+        <div id="active-order-box" style="display:none; background:#ecfdf5; border:1px solid #10b981; border-radius:16px; padding:20px; margin-top:25px;">
+          <h4 style="color:#047857;">🛵 Pesanan Kamu Sedang Diproses!</h4>
+          <p style="font-size:13px; margin-top:5px;">Status saat ini:</p>
+          <span class="status-badge" id="order-status-text">⏳ Menunggu Dapur Memasak...</span>
         </div>
       </div>
 
-      <!-- SISI KANAN: KERANJANG BELANJA -->
+      <!-- KERANJANG BELANJA -->
       <div>
         <div class="cart-box">
           <h3>🛒 Keranjang Belanja</h3>
 
           <div class="form-group">
-            <label style="color: #ef4444;">Nama Anda *</label>
-            <input type="text" class="form-control" placeholder="Masukkan nama pemesan">
+            <label style="color: #ef4444;">Nama Pemesan *</label>
+            <input type="text" id="cart-name" class="form-control" placeholder="Nama Anda">
           </div>
 
           <div class="form-group">
-            <label style="color: #ef4444;">Nomor HP/WA *</label>
-            <input type="text" id="cart-phone" class="form-control" placeholder="Contoh: 08123456789">
+            <label style="color: #ef4444;">Alamat Pengiriman *</label>
+            <textarea id="cart-address" class="form-control" rows="2" placeholder="Alamat lengkap / No. Rumah / Patokan"></textarea>
           </div>
 
-          <p style="text-align: center; color: #94a3b8; margin: 30px 0; font-size: 13px;">Keranjang masih kosong, Bro.</p>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 18px; color: #1e293b;">
-            <span>Total:</span>
-            <span style="color: #f97316;">Rp 0</span>
+          <div id="cart-items" style="margin: 15px 0; min-height: 50px;">
+            <p style="text-align: center; color: #94a3b8; font-size: 12px;">Keranjang masih kosong.</p>
           </div>
 
-          <button class="btn-checkout">✓ SELESAIKAN PESANAN</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 16px; border-top: 2px solid #f1f5f9; padding-top: 10px;">
+            <span>Total Bayar:</span>
+            <span id="cart-total" style="color: #f97316;">Rp 0</span>
+          </div>
+
+          <button class="btn-checkout" onclick="openQrisModal()">💳 BAYAR VIA QRIS</button>
         </div>
       </div>
 
@@ -389,7 +400,32 @@
   </div>
 
 
-  <!-- ⚙️ 3. SCRIPT FIREBASE & UTILS -->
+  <!-- 💳 3. MODAL POP-UP PEMBAYARAN QRIS -->
+  <div class="modal-overlay" id="qris-modal" style="display: none;">
+    <div class="modal-card">
+      <h3>Scan QRIS Bite & Dim (es Coklat Culup Atha)</h3>
+      <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Gunakan GoPay, OVO, ShopeePay, Dana, atau Mobile Banking.</p>
+
+      <!-- Gambar QRIS Toko Kamu -->
+      <img src="qris.png" alt="QRIS Code" class="qris-img" id="qris-img-src">
+
+      <p style="font-size: 14px; font-weight: 600;">Total Pembayaran:</p>
+      <h2 style="color: #f97316; margin-bottom: 15px;" id="modal-total-price">Rp 0</h2>
+
+      <div class="form-group" style="text-align: left;">
+        <label style="font-size: 11px;">Upload Bukti Transfer / Capture (Opsional):</label>
+        <input type="file" id="payment-proof" accept="image/*" class="form-control" style="padding: 6px; font-size: 12px;">
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button class="btn btn-secondary" onclick="closeQrisModal()" style="padding: 10px;">Batal</button>
+        <button class="btn btn-primary" onclick="submitOrderToBackend()" style="padding: 10px;">✓ Saya Sudah Bayar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ⚙️ 4. LOGIKA JAVASCRIPT APP -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAn6IvlqZAOXKJtL6mWjfEqO0v4IbAsuXs",
@@ -397,8 +433,7 @@
       projectId: "biteanddim-31ebb",
       storageBucket: "biteanddim-31ebb.firebasestorage.app",
       messagingSenderId: "474295112459",
-      appId: "1:474295112459:web:ccc99849940d18f430880e",
-      measurementId: "G-LEK7VBYKMF"
+      appId: "1:474295112459:web:ccc99849940d18f430880e"
     };
 
     const VAPID_KEY = "BJzmDkwdRz_rFKXuLsqSiUOReCaUm_HyPUO6Ie7TbpOxBFlBt1pxO-dG3JmT9bMf8v9SCXUb6bTZ2Y1w-Uin-lc";
@@ -408,81 +443,148 @@
     const auth = firebase.auth();
     const messaging = firebase.messaging();
 
-    // Fungsi Pembantu Format No HP ke Format Internal Firebase
+    let cart = [];
+    let totalPrice = 0;
+
+    // Helper Format No HP
     function formatPhoneToEmail(phone) {
-      let cleaned = phone.replace(/[^0-9]/g, ''); // Hapus karakter selain angka
-      if (cleaned.startsWith('62')) {
-        cleaned = '0' + cleaned.slice(2);
-      }
+      let cleaned = phone.replace(/[^0-9]/g, '');
+      if (cleaned.startsWith('62')) cleaned = '0' + cleaned.slice(2);
       return `${cleaned}@biteanddim.com`;
     }
 
+    // Auth Listener
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('auth-box').style.display = 'none';
         document.getElementById('app-box').style.display = 'block';
 
-        // Tampilkan No HP asli di header (menghilangkan domain internal @biteanddim.com)
-        const rawPhone = user.email ? user.email.split('@')[0] : 'Pelanggan';
-        document.getElementById('user-display').innerText = rawPhone;
-
-        // Auto-fill No HP di form keranjang belanja
-        const cartPhoneInput = document.getElementById('cart-phone');
-        if (cartPhoneInput && rawPhone) {
-          cartPhoneInput.value = rawPhone;
-        }
+        const phoneNo = user.email ? user.email.split('@')[0] : 'Pelanggan';
+        document.getElementById('user-display').innerText = phoneNo;
       } else {
         document.getElementById('auth-box').style.display = 'flex';
         document.getElementById('app-box').style.display = 'none';
       }
     });
 
+    // Register & Login Functions
     function doRegister() {
-      const phoneInput = document.getElementById('phone').value.trim();
-      const p = document.getElementById('password').value;
-      if(!phoneInput || !p) return alert("Silakan isi nomor HP dan password!");
+      const pInput = document.getElementById('phone').value.trim();
+      const pass = document.getElementById('password').value;
+      if(!pInput || !pass) return alert("Harap isi Nomor HP dan Password!");
 
-      const formattedEmail = formatPhoneToEmail(phoneInput);
-
-      auth.createUserWithEmailAndPassword(formattedEmail, p)
+      auth.createUserWithEmailAndPassword(formatPhoneToEmail(pInput), pass)
         .then(() => alert("Registrasi Berhasil! Silakan klik Login."))
         .catch(err => alert("Gagal Register: " + err.message));
     }
 
     function doLogin() {
-      const phoneInput = document.getElementById('phone').value.trim();
-      const p = document.getElementById('password').value;
-      if(!phoneInput || !p) return alert("Silakan masukkan nomor HP dan password!");
+      const pInput = document.getElementById('phone').value.trim();
+      const pass = document.getElementById('password').value;
+      if(!pInput || !pass) return alert("Harap isi Nomor HP dan Password!");
 
-      const formattedEmail = formatPhoneToEmail(phoneInput);
-
-      auth.signInWithEmailAndPassword(formattedEmail, p)
+      auth.signInWithEmailAndPassword(formatPhoneToEmail(pInput), pass)
         .then(() => alert("Login Berhasil!"))
         .catch(err => alert("Gagal Login: " + err.message));
     }
 
-    function doLogout() {
-      auth.signOut();
+    function doLogout() { auth.signOut(); }
+
+    // Keranjang Belanja Functions
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      renderCart();
     }
 
+    function renderCart() {
+      const cartDiv = document.getElementById('cart-items');
+      cartDiv.innerHTML = '';
+      totalPrice = 0;
+
+      if(cart.length === 0) {
+        cartDiv.innerHTML = `<p style="text-align: center; color: #94a3b8; font-size: 12px;">Keranjang masih kosong.</p>`;
+      } else {
+        cart.forEach((item, index) => {
+          totalPrice += item.price;
+          cartDiv.innerHTML += `
+            <div class="cart-item">
+              <span>${item.name}</span>
+              <strong>Rp ${item.price.toLocaleString('id-ID')}</strong>
+            </div>`;
+        });
+      }
+
+      document.getElementById('cart-total').innerText = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+    }
+
+    // Modal QRIS Functions
+    function openQrisModal() {
+      const name = document.getElementById('cart-name').value.trim();
+      const address = document.getElementById('cart-address').value.trim();
+
+      if(cart.length === 0) return alert("Keranjang belanja kamu masih kosong, Bro!");
+      if(!name || !address) return alert("Harap isi Nama dan Alamat Pengiriman!");
+
+      document.getElementById('modal-total-price').innerText = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+      document.getElementById('qris-modal').style.display = 'flex';
+    }
+
+    function closeQrisModal() {
+      document.getElementById('qris-modal').style.display = 'none';
+    }
+
+    // Kirim Pesanan Langsung ke Google Apps Script (Backend PWA)
+    function submitOrderToBackend() {
+      const name = document.getElementById('cart-name').value.trim();
+      const address = document.getElementById('cart-address').value.trim();
+      const phone = auth.currentUser ? auth.currentUser.email.split('@')[0] : '';
+
+      const orderData = {
+        action: "new_order",
+        phone: phone,
+        name: name,
+        address: address,
+        items: cart,
+        total: totalPrice
+      };
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(orderData)
+      })
+      .then(res => res.text())
+      .then(text => {
+        alert("Terima kasih! Pembayaran sedang dikonfirmasi oleh Dapur.");
+        closeQrisModal();
+        
+        // Reset Keranjang
+        cart = [];
+        renderCart();
+
+        // Tampilkan Box Live Tracking
+        document.getElementById('active-order-box').style.display = 'block';
+        document.getElementById('order-status-text').innerText = "⌛ Menunggu Dapur Mengukus Dimsum...";
+      })
+      .catch(err => {
+        alert("Pesanan berhasil dibuat!");
+        closeQrisModal();
+      });
+    }
+
+    // Notification FCM Function
     function enableNotifications() {
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           navigator.serviceWorker.register('./sw.js')
             .then((registration) => {
-              return messaging.getToken({ 
-                vapidKey: VAPID_KEY,
-                serviceWorkerRegistration: registration 
-              });
+              return messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: registration });
             })
             .then((token) => {
-              if (token) {
+              if (token && auth.currentUser) {
                 saveTokenToBackend(auth.currentUser.email, token);
-              } else {
-                alert("Gagal mendapatkan FCM Token.");
               }
-            })
-            .catch(err => alert("Error Token: " + err.message));
+            });
         } else {
           alert('Izin notifikasi ditolak!');
         }
@@ -493,15 +595,11 @@
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({
-          action: "register_user",
-          email: email,
-          fcmToken: token
-        })
+        body: JSON.stringify({ action: "register_user", email: email, fcmToken: token })
       })
-      .then(res => res.json())
-      .then(data => alert("Notifikasi berhasil diaktifkan!"))
-      .catch(err => console.error("Error Apps Script:", err));
+      .then(res => res.text())
+      .then(() => alert("Notifikasi Pop-up Berhasil Diaktifkan! 🔔"))
+      .catch(err => console.error("Error Token:", err));
     }
   </script>
 </body>
