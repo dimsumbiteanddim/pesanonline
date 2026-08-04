@@ -44,7 +44,6 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
 
-    /* Header Sejajar (Logo Kiri, Teks Kanan) */
     .auth-header-inline {
       display: flex;
       align-items: center;
@@ -267,7 +266,7 @@
 </head>
 <body>
 
-  <!-- 🔒 1. FORM LOGIN & REGISTER (SEJAJAR & RAPI) -->
+  <!-- 🔒 1. FORM LOGIN & REGISTER (MENGGUNAKAN NO HP) -->
   <div class="auth-wrapper" id="auth-box">
     <div class="auth-card">
       
@@ -281,8 +280,8 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="nama@email.com">
+        <label for="phone">Nomor HP / WhatsApp</label>
+        <input type="tel" id="phone" class="form-control" placeholder="Contoh: 08123456789">
       </div>
 
       <div class="form-group">
@@ -372,7 +371,7 @@
 
           <div class="form-group">
             <label style="color: #ef4444;">Nomor HP/WA *</label>
-            <input type="text" class="form-control" placeholder="Contoh: 08123456789">
+            <input type="text" id="cart-phone" class="form-control" placeholder="Contoh: 08123456789">
           </div>
 
           <p style="text-align: center; color: #94a3b8; margin: 30px 0; font-size: 13px;">Keranjang masih kosong, Bro.</p>
@@ -409,11 +408,29 @@
     const auth = firebase.auth();
     const messaging = firebase.messaging();
 
+    // Fungsi Pembantu Format No HP ke Format Internal Firebase
+    function formatPhoneToEmail(phone) {
+      let cleaned = phone.replace(/[^0-9]/g, ''); // Hapus karakter selain angka
+      if (cleaned.startsWith('62')) {
+        cleaned = '0' + cleaned.slice(2);
+      }
+      return `${cleaned}@biteanddim.com`;
+    }
+
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('auth-box').style.display = 'none';
         document.getElementById('app-box').style.display = 'block';
-        document.getElementById('user-display').innerText = user.email;
+
+        // Tampilkan No HP asli di header (menghilangkan domain internal @biteanddim.com)
+        const rawPhone = user.email ? user.email.split('@')[0] : 'Pelanggan';
+        document.getElementById('user-display').innerText = rawPhone;
+
+        // Auto-fill No HP di form keranjang belanja
+        const cartPhoneInput = document.getElementById('cart-phone');
+        if (cartPhoneInput && rawPhone) {
+          cartPhoneInput.value = rawPhone;
+        }
       } else {
         document.getElementById('auth-box').style.display = 'flex';
         document.getElementById('app-box').style.display = 'none';
@@ -421,21 +438,25 @@
     });
 
     function doRegister() {
-      const e = document.getElementById('email').value;
+      const phoneInput = document.getElementById('phone').value.trim();
       const p = document.getElementById('password').value;
-      if(!e || !p) return alert("Silakan isi email dan password!");
+      if(!phoneInput || !p) return alert("Silakan isi nomor HP dan password!");
 
-      auth.createUserWithEmailAndPassword(e, p)
+      const formattedEmail = formatPhoneToEmail(phoneInput);
+
+      auth.createUserWithEmailAndPassword(formattedEmail, p)
         .then(() => alert("Registrasi Berhasil! Silakan klik Login."))
         .catch(err => alert("Gagal Register: " + err.message));
     }
 
     function doLogin() {
-      const e = document.getElementById('email').value;
+      const phoneInput = document.getElementById('phone').value.trim();
       const p = document.getElementById('password').value;
-      if(!e || !p) return alert("Silakan masukkan email dan password!");
+      if(!phoneInput || !p) return alert("Silakan masukkan nomor HP dan password!");
 
-      auth.signInWithEmailAndPassword(e, p)
+      const formattedEmail = formatPhoneToEmail(phoneInput);
+
+      auth.signInWithEmailAndPassword(formattedEmail, p)
         .then(() => alert("Login Berhasil!"))
         .catch(err => alert("Gagal Login: " + err.message));
     }
@@ -444,11 +465,9 @@
       auth.signOut();
     }
 
-    // 🟢 FUNGSI NOTIFIKASI YANG SUDAH MEMANGGIL SW.JS
     function enableNotifications() {
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
-          // Meregistrasikan sw.js agar Firebase Messaging menggunakan Service Worker gabungan
           navigator.serviceWorker.register('./sw.js')
             .then((registration) => {
               return messaging.getToken({ 
