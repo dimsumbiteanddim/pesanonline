@@ -23,7 +23,7 @@ messaging.onBackgroundMessage((payload) => {
   const title = payload.notification.title || "Bite & Dim Notification";
   const options = {
     body: payload.notification.body || "Ada pembaruan status pesanan!",
-    icon: '/icon.png' // Opsional: ganti sesuai file ikon kamu
+    icon: '/Favicon.png' // Opsional: ganti sesuai file ikon kamu
   };
 
   self.registration.showNotification(title, options);
