@@ -392,14 +392,14 @@
 
   <!-- ⚙️ 3. SCRIPT FIREBASE & UTILS -->
   <script>
-   const firebaseConfig = {
-    apiKey: "AIzaSyAn6IvlqZAOXKJtL6mWjfEqO0v4IbAsuXs",
-    authDomain: "biteanddim-31ebb.firebaseapp.com",
-    projectId: "biteanddim-31ebb",
-    storageBucket: "biteanddim-31ebb.firebasestorage.app",
-    messagingSenderId: "474295112459",
-    appId: "1:474295112459:web:ccc99849940d18f430880e",
-    measurementId: "G-LEK7VBYKMF"
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn6IvlqZAOXKJtL6mWjfEqO0v4IbAsuXs",
+      authDomain: "biteanddim-31ebb.firebaseapp.com",
+      projectId: "biteanddim-31ebb",
+      storageBucket: "biteanddim-31ebb.firebasestorage.app",
+      messagingSenderId: "474295112459",
+      appId: "1:474295112459:web:ccc99849940d18f430880e",
+      measurementId: "G-LEK7VBYKMF"
     };
 
     const VAPID_KEY = "BJzmDkwdRz_rFKXuLsqSiUOReCaUm_HyPUO6Ie7TbpOxBFlBt1pxO-dG3JmT9bMf8v9SCXUb6bTZ2Y1w-Uin-lc";
@@ -444,16 +444,26 @@
       auth.signOut();
     }
 
+    // 🟢 FUNGSI NOTIFIKASI YANG SUDAH MEMANGGIL SW.JS
     function enableNotifications() {
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
-          messaging.getToken({ vapidKey: VAPID_KEY }).then((token) => {
-            if (token) {
-              saveTokenToBackend(auth.currentUser.email, token);
-            } else {
-              alert("Gagal mendapatkan FCM Token.");
-            }
-          }).catch(err => alert("Error Token: " + err.message));
+          // Meregistrasikan sw.js agar Firebase Messaging menggunakan Service Worker gabungan
+          navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+              return messaging.getToken({ 
+                vapidKey: VAPID_KEY,
+                serviceWorkerRegistration: registration 
+              });
+            })
+            .then((token) => {
+              if (token) {
+                saveTokenToBackend(auth.currentUser.email, token);
+              } else {
+                alert("Gagal mendapatkan FCM Token.");
+              }
+            })
+            .catch(err => alert("Error Token: " + err.message));
         } else {
           alert('Izin notifikasi ditolak!');
         }
