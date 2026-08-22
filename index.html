@@ -15,6 +15,7 @@
       --green-main: #27ae60;
       --blue-main: #2980b9;
       --red-main: #c0392b;
+      --purple-main: #8e44ad;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -42,7 +43,6 @@
     
     .btn-header { background: #3498db; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 13px; }
     .btn-header:hover { opacity: 0.9; }
-    .btn-suara { background: #e67e22; }
 
     /* LAYOUT MAIN */
     .main-container { display: flex; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
@@ -119,7 +119,6 @@
         <span class="value" id="valOmzet">Rp 0</span>
       </div>
       <button class="btn-header" onclick="loadData()"><i class="fa-solid fa-rotate"></i> Refresh</button>
-      <button class="btn-header btn-suara"><i class="fa-solid fa-volume-high"></i> Suara</button>
     </div>
   </header>
 
@@ -135,7 +134,7 @@
         <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Memuat Menu & Stok Dapur...
       </div>
 
-      <!-- KATEGORI ACCORDIONS (DIHASILKAN DINAMIS) -->
+      <!-- ACCORDION CONTAINERS -->
       <div id="accordionContainer"></div>
     </div>
 
@@ -145,7 +144,7 @@
       <div class="panel-card" style="background: #fffdf5; border: 1px solid #fef3c7;">
         <div class="panel-title" style="color: #b45309;">
           <span><i class="fa-solid fa-bolt"></i> Pesanan Online <span class="online-badge" id="onlineCount">0</span></span>
-          <small style="color: #d97706; font-weight: normal;">Sync 3s</small>
+          <small style="color: #d97706; font-weight: normal;">Sync 5s</small>
         </div>
         <div id="onlinePendingList">
           <p style="font-size: 11px; color: #92400e; text-align: center;">Tidak ada pesanan online pending.</p>
@@ -187,14 +186,15 @@
   </div>
 
   <script>
-    // MASUKKAN URL GOOGLE APPS SCRIPT LENGKAP KAMU DI SINI
+    // URL GOOGLE APPS SCRIPT KAMU
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxijavfFwCPC4BrH2-hYpZIN2tJuhfN4hmLo9eGRxKCkVnPGZXPF8CtXIqrzsNGUtOqmA/exec"; 
 
     let keranjang = [];
-    let stateQty = {}; // Menyimpan temp Qty per menu sebelum ditambahkan
+    let stateQty = {};
 
-    // PEMETAN WARNA KATEGORI TAMPILAN
+    // MAPPING ACCORDION DENGAN KATEGORI BUNDLING DI DEPAN
     const KATEGORI_CONFIG = [
+      { key: "bundling", title: "🔥 PAKET BUNDLING PROMO", color: "#8e44ad" },
       { key: "original", title: "Dimsum Original", color: "#f39c12" },
       { key: "mentai", title: "Dimsum Mentai", color: "#e67e22" },
       { key: "keju", title: "Dimsum Keju", color: "#f1c40f" },
@@ -204,9 +204,9 @@
       { key: "lainnya", title: "Menu Lainnya", color: "#2c3e50" }
     ];
 
-    // MENGELOMPOKKAN MENU SECARA OTOMATIS
     function deteksiKategori(namaProduk) {
       const lower = namaProduk.toLowerCase();
+      if (lower.includes("ngemil") || lower.includes("duo") || lower.includes("sultan") || lower.includes("sekeluarga") || lower.includes("bundling")) return "bundling";
       if (lower.includes("goreng")) return "goreng";
       if (lower.includes("tahu") || lower.includes("bakso")) return "tahu";
       if (lower.includes("mentai")) return "mentai";
@@ -216,18 +216,14 @@
       return "lainnya";
     }
 
-    // MEMUAT DATA DARI APPS SCRIPT
     function loadData() {
       fetch(SCRIPT_URL + "?action=getStok")
         .then(res => res.json())
         .then(data => {
           document.getElementById("loadingMenu").style.display = "none";
-          
           if (data.status === "success") {
-            // Update Omzet & Stok Header
             document.getElementById("valOmzet").innerText = "Rp " + (data.omzetHarian || 0).toLocaleString("id-ID");
             document.getElementById("stokSummary").innerText = `Dimsum (${data.stokDimsumPcs || 0}) | Tahu (${data.stokTahuPcs || 0}) | Goreng (${data.stokDimsumGorengPcs || 0})`;
-
             renderMenuAccordions(data.menu || []);
           }
         })
@@ -238,7 +234,6 @@
       loadPendingOrders();
     }
 
-    // MEMUAT PESANAN ONLINE PENDING
     function loadPendingOrders() {
       fetch(SCRIPT_URL + "?action=getPendingOrders")
         .then(res => res.json())
@@ -280,12 +275,10 @@
       });
     }
 
-    // RENDER SCRIPT UNTUK ACCORDION MENU DINAMIS
     function renderMenuAccordions(menuList) {
       const container = document.getElementById("accordionContainer");
       container.innerHTML = "";
 
-      // Kelompokkan menu berdasarkan KATEGORI_CONFIG
       const grouped = {};
       KATEGORI_CONFIG.forEach(k => grouped[k.key] = []);
 
@@ -295,17 +288,16 @@
         else grouped["lainnya"].push(item);
       });
 
-      // Render setiap kelompok yang ada isinya
       KATEGORI_CONFIG.forEach((cfg, idx) => {
         const items = grouped[cfg.key];
         if (!items || items.length === 0) return;
 
-        const isCollapsed = idx !== 0 ? "collapsed" : ""; // Accordion pertama otomatis terbuka
+        const isCollapsed = idx !== 0 ? "collapsed" : ""; 
         
         let html = `
           <div class="category-group ${isCollapsed}" id="catGroup_${cfg.key}">
             <div class="category-header" style="background-color: ${cfg.color};" onclick="toggleAccordion('catGroup_${cfg.key}')">
-              <span><i class="fa-solid fa-utensils"></i> ${cfg.title}</span>
+              <span><i class="fa-solid fa-tags"></i> ${cfg.title}</span>
               <span>${items.length} opsi <i class="fa-solid fa-chevron-down"></i></span>
             </div>
             <div class="category-body">
@@ -318,7 +310,7 @@
             <div class="card-item">
               <div class="card-top">
                 <span class="item-title">${item.produk}</span>
-                <span class="item-badge">${item.isiPcs > 1 ? 'Isi ' + item.isiPcs + ' pcs' : 'Satuan'}</span>
+                <span class="item-badge">${item.isiPcs > 1 ? 'Isi ' + item.isiPcs + ' pcs' : 'Porsi'}</span>
               </div>
               <div class="item-price">Rp ${item.harga.toLocaleString("id-ID")}</div>
               <div class="item-stok">Maks: ${item.stok}</div>
@@ -329,7 +321,7 @@
                 <button class="qty-btn" onclick="updateTempQty('${item.produk}', 1)">+</button>
               </div>
 
-              <button class="btn-tambah" onclick="tambahKeKeranjang('${item.produk}', ${item.harga})" ${item.stok <= 0 ? 'disabled' : ''}>
+              <button class="btn-tambah" style="background:${cfg.color};" onclick="tambahKeKeranjang('${item.produk}', ${item.harga})" ${item.stok <= 0 ? 'disabled' : ''}>
                 ${item.stok <= 0 ? 'HABIS' : '+ TAMBAH'}
               </button>
             </div>
@@ -355,7 +347,6 @@
       document.getElementById("inputQty_" + sanitizeId(nama)).value = stateQty[nama];
     }
 
-    // MANAJEMEN KERANJANG KASIR
     function tambahKeKeranjang(nama, harga) {
       const qtyPilih = stateQty[nama] || 1;
       const ada = keranjang.find(i => i.produk === nama);
@@ -367,7 +358,7 @@
         keranjang.push({ produk: nama, harga: harga, qty: qtyPilih, subtotal: harga * qtyPilih });
       }
 
-      stateQty[nama] = 1; // Reset temp input
+      stateQty[nama] = 1;
       document.getElementById("inputQty_" + sanitizeId(nama)).value = 1;
       renderCart();
     }
@@ -409,7 +400,6 @@
       document.getElementById("txtTotalBayar").innerText = "Rp " + totalBayar.toLocaleString("id-ID");
     }
 
-    // PROSES SIMPAN TRANSAKSI
     function prosesBayar() {
       if (keranjang.length === 0) return alert("Keranjang masih kosong!");
 
@@ -435,7 +425,7 @@
           keranjang = [];
           document.getElementById("inputDiskon").value = 0;
           renderCart();
-          loadData(); // Auto update stok dapur & omzet
+          loadData();
         } else {
           alert("Gagal: " + data.message);
         }
@@ -443,7 +433,6 @@
       .catch(err => alert("Terjadi kesalahan koneksi."));
     }
 
-    // AUTO SYNC DATA & ONLINE ORDER SETIAP 5 DETIK
     document.addEventListener("DOMContentLoaded", () => {
       loadData();
       setInterval(loadPendingOrders, 5000);
