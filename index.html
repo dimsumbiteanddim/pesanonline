@@ -216,52 +216,66 @@
       return "lainnya";
     }
 
-    function loadData() {
-      fetch(SCRIPT_URL + "?action=getStok")
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("loadingMenu").style.display = "none";
-          if (data.status === "success") {
-            document.getElementById("valOmzet").innerText = "Rp " + (data.omzetHarian || 0).toLocaleString("id-ID");
-            document.getElementById("stokSummary").innerText = `Dimsum (${data.stokDimsumPcs || 0}) | Tahu (${data.stokTahuPcs || 0}) | Goreng (${data.stokDimsumGorengPcs || 0})`;
-            renderMenuAccordions(data.menu || []);
-          }
-        })
-        .catch(err => {
-          document.getElementById("loadingMenu").innerHTML = "<p style='color:red;'>Gagal memuat data dari Google Sheets!</p>";
-        });
+   function loadData() {
+  // Panggil via JSONP Script Element (Bypass Blokir CORS Browser)
+  const script = document.createElement('script');
+  const callbackName = 'cb_stok_' + Math.floor(Math.random() * 10000);
 
-      loadPendingOrders();
+  window[callbackName] = function(data) {
+    document.getElementById("loadingMenu").style.display = "none";
+    if (data.status === "success") {
+      document.getElementById("valOmzet").innerText = "Rp " + (data.omzetHarian || 0).toLocaleString("id-ID");
+      document.getElementById("stokSummary").innerText = `Dimsum (${data.stokDimsumPcs || 0}) | Tahu (${data.stokTahuPcs || 0}) | Goreng (${data.stokDimsumGorengPcs || 0})`;
+      renderMenuAccordions(data.menu || []);
+    } else {
+      document.getElementById("loadingMenu").innerHTML = "<p style='color:red;'>Error: " + data.message + "</p>";
     }
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
 
-    function loadPendingOrders() {
-      fetch(SCRIPT_URL + "?action=getPendingOrders")
-        .then(res => res.json())
-        .then(orders => {
-          const container = document.getElementById("onlinePendingList");
-          document.getElementById("onlineCount").innerText = orders.length;
+  script.src = SCRIPT_URL + "?action=getStok&callback=" + callbackName + "&t=" + new Date().getTime();
+  script.onerror = function() {
+    document.getElementById("loadingMenu").innerHTML = "<p style='color:red;'>Gagal terhubung ke Google Sheets!</p>";
+  };
+  document.body.appendChild(script);
 
-          if (orders.length === 0) {
-            container.innerHTML = `<p style="font-size: 11px; color: #92400e; text-align: center;">Tidak ada pesanan online pending.</p>`;
-            return;
-          }
+  loadPendingOrders();
+}
 
-          container.innerHTML = "";
-          orders.forEach(ord => {
-            container.innerHTML += `
-              <div class="pending-item">
-                <b>${ord.namaPelanggan}</b> (${ord.nomorWA})<br>
-                <span style="color:#555;">${ord.produk}</span><br>
-                <b>Total: Rp ${Number(ord.totalHarga).toLocaleString("id-ID")}</b>
-                <div class="pending-actions">
-                  <button class="btn-sm btn-acc" onclick="konfirmasiOrder(${ord.rowIndex}, 'completeOrder')">Selesaikan</button>
-                  <button class="btn-sm btn-dec" onclick="konfirmasiOrder(${ord.rowIndex}, 'cancelOrder')">Batal</button>
-                </div>
-              </div>
-            `;
-          });
-        }).catch(e => console.log("Gagal sync pending"));
+function loadPendingOrders() {
+  const script = document.createElement('script');
+  const callbackName = 'cb_pending_' + Math.floor(Math.random() * 10000);
+
+  window[callbackName] = function(orders) {
+    const container = document.getElementById("onlinePendingList");
+    document.getElementById("onlineCount").innerText = orders ? orders.length : 0;
+
+    if (!orders || orders.length === 0) {
+      container.innerHTML = `<p style="font-size: 11px; color: #92400e; text-align: center;">Tidak ada pesanan online pending.</p>`;
+    } else {
+      container.innerHTML = "";
+      orders.forEach(ord => {
+        container.innerHTML += `
+          <div class="pending-item">
+            <b>${ord.namaPelanggan}</b> (${ord.nomorWA})<br>
+            <span style="color:#555;">${ord.produk}</span><br>
+            <b>Total: Rp ${Number(ord.totalHarga).toLocaleString("id-ID")}</b>
+            <div class="pending-actions">
+              <button class="btn-sm btn-acc" onclick="konfirmasiOrder(${ord.rowIndex}, 'completeOrder')">Selesaikan</button>
+              <button class="btn-sm btn-dec" onclick="konfirmasiOrder(${ord.rowIndex}, 'cancelOrder')">Batal</button>
+            </div>
+          </div>
+        `;
+      });
     }
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  script.src = SCRIPT_URL + "?action=getPendingOrders&callback=" + callbackName + "&t=" + new Date().getTime();
+  document.body.appendChild(script);
+}
 
     function konfirmasiOrder(rowIndex, action) {
       fetch(SCRIPT_URL, {
