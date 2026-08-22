@@ -348,8 +348,20 @@ function loadPendingOrders() {
     }
 
     function toggleAccordion(id) {
-      document.getElementById(id).classList.toggle("collapsed");
+  // Ambil semua elemen kategori
+  const allGroups = document.querySelectorAll('.category-group');
+  const targetGroup = document.getElementById(id);
+
+  // Tutup semua kategori LAINNYA
+  allGroups.forEach(group => {
+    if (group !== targetGroup) {
+      group.classList.add('collapsed');
     }
+  });
+
+  // Buka/Tutup kategori yang diklik
+  targetGroup.classList.toggle('collapsed');
+}
 
     function sanitizeId(str) {
       return str.replace(/[^a-zA-Z0-9]/g, "_");
