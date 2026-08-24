@@ -186,6 +186,22 @@
   </div>
 
   <script>
+
+    // Registrasi & Cek Pembaruan Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    reg.onupdatefound = () => {
+      const installingWorker = reg.installing;
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // Ada versi kode baru, muat ulang halaman otomatis
+          window.location.reload();
+        }
+      };
+    };
+  });
+}
+    
     // URL GOOGLE APPS SCRIPT KAMU
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxijavfFwCPC4BrH2-hYpZIN2tJuhfN4hmLo9eGRxKCkVnPGZXPF8CtXIqrzsNGUtOqmA/exec"; 
 
