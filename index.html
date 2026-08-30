@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Kasir POS & Membership - BITE & DIM</title>
+  <title>Aplikasi Kasir POS & Membership - BITE & DIM Multi-Outlet</title>
 
   <!-- PEMANGGILAN MANIFEST.JSON DAN SW.JS -->
   <link rel="manifest" href="manifest.json">
@@ -54,7 +54,19 @@
     
     .btn-header { background: #3498db; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; }
 
-    /* TOMBOL INSTALL PWA */
+    /* INTEGRASI: STYLE DROPDOWN OUTLET */
+    .select-outlet {
+      background: #e67e22;
+      color: white;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 11px;
+      cursor: pointer;
+      outline: none;
+    }
+
     .btn-install-pwa {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
@@ -71,27 +83,22 @@
     }
     .btn-install-pwa:hover { opacity: 0.9; }
 
-    /* MODUL WRAPPERS */
     .modul-page { width: 100%; }
     .modul-page.hidden { display: none !important; }
 
-    /* LAYOUT MAIN KASIR */
     .main-container { display: flex; gap: 6px; padding: 6px; max-width: 100%; margin: 0 auto; width: 100%; box-sizing: border-box; }
     .left-panel { flex: 1; min-width: 0; }
     .right-panel { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 
-    /* STOK SUMMARY */
     .stok-bar { background: white; padding: 6px 8px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .stok-bar h3 { font-size: 11px; color: #444; }
     .stok-indicators { font-size: 10px; font-weight: 600; color: #d35400; }
 
-    /* ACCORDION CATEGORIES */
     .category-group { margin-bottom: 6px; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .category-header { padding: 8px 10px; color: white; font-weight: bold; font-size: 11px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .category-body { background: white; padding: 6px; display: grid; grid-template-columns: 1fr; gap: 6px; }
     .category-group.collapsed .category-body { display: none; }
 
-    /* MENU CARD */
     .card-item { border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px; background: #fff; position: relative; }
     .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
     .item-title { font-weight: bold; font-size: 11px; color: #2c3e50; line-height: 1.2; }
@@ -105,15 +112,12 @@
     
     .btn-tambah { width: 100%; background: var(--orange-main); color: white; border: none; padding: 5px; border-radius: 4px; font-weight: bold; font-size: 10px; cursor: pointer; letter-spacing: 0.3px; }
 
-    /* RIGHT PANEL CARDS */
     .panel-card { background: white; border-radius: 6px; padding: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .panel-title { font-size: 11px; font-weight: bold; padding-bottom: 6px; border-bottom: 1px solid #f1f5f9; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
 
-    /* KASIR FORM & CART */
     .input-group-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
     .input-group-row input { width: 100%; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 10px; }
 
-    /* INTEGRASI CHECK MEMBER BOX */
     .member-check-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px; margin-bottom: 8px; }
     .member-check-box label { font-size: 9px; font-weight: bold; color: #166534; display: block; margin-bottom: 2px; }
     .member-input-group { display: flex; gap: 4px; }
@@ -133,7 +137,6 @@
 
     .btn-proses { width: 100%; background: #059669; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 6px; display: flex; justify-content: center; align-items: center; gap: 4px; }
 
-    /* LAYOUT MODUL MEMBERSHIP */
     .member-container { padding: 8px; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
     .member-card { background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .member-card h3 { font-size: 12px; font-weight: bold; margin-bottom: 8px; color: var(--bg-dark); }
@@ -146,7 +149,6 @@
     .table-member th { background: #f8fafc; padding: 6px; border-bottom: 2px solid #e2e8f0; color: #475569; font-weight: bold; }
     .table-member td { padding: 6px; border-bottom: 1px solid #f1f5f9; }
 
-    /* 📌 BOTTOM NAVIGATION BAR (CIRCLE K STYLE) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -182,10 +184,8 @@
     .nav-item.active { color: #d35400; }
     .nav-item i { font-size: 16px; }
 
-    /* TOMBOL MELAYANG QR CODE */
     .nav-qr-wrapper { position: relative; top: -14px; display: flex; flex-direction: column; align-items: center; }
     .btn-qr-floating {
-      width: 48 h-48;
       width: 48px;
       height: 48px;
       background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
@@ -217,7 +217,12 @@
       <span>Live Sync Dapur</span>
     </div>
     <div class="header-controls">
-      <!-- TOMBOL INSTALL PWA -->
+      <!-- INTEGRASI: DROPDOWN CABANG MULTI-OUTLET -->
+      <select id="selectOutlet" class="select-outlet" onchange="gantiOutlet()">
+        <option value="OUT-001">📍 Kayutangi</option>
+        <option value="OUT-002">📍 Veteran</option>
+      </select>
+
       <button id="btnInstallPwa" class="btn-install-pwa" onclick="installPWA()">
         <i class="fa-solid fa-download"></i> Install App
       </button>
@@ -230,12 +235,9 @@
     </div>
   </header>
 
-  <!-- ===================================== -->
-  <!-- 🛒 MODUL 1: KASIR Utama               -->
-  <!-- ===================================== -->
+  <!-- MODUL 1: KASIR Utama -->
   <div id="modulKasir" class="modul-page">
     <div class="main-container">
-      <!-- LEFT PANEL: MENU -->
       <div class="left-panel">
         <div class="stok-bar">
           <h3><i class="fa-solid fa-utensils"></i> Kartu Menu (Offline / Dine In)</h3>
@@ -246,13 +248,10 @@
           <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Memuat Menu & Stok Dapur...
         </div>
 
-        <!-- ACCORDION CONTAINERS -->
         <div id="accordionContainer"></div>
       </div>
 
-      <!-- RIGHT PANEL: ONLINE & KASIR -->
       <div class="right-panel">
-        <!-- PESANAN ONLINE PENDING -->
         <div class="panel-card" style="background: #fffdf5; border: 1px solid #fef3c7;">
           <div class="panel-title" style="color: #b45309;">
             <span><i class="fa-solid fa-bolt"></i> Pesanan Online <span class="online-badge" id="onlineCount">0</span></span>
@@ -263,14 +262,12 @@
           </div>
         </div>
 
-        <!-- KERANJANG KASIR -->
         <div class="panel-card">
           <div class="panel-title">
             <span><i class="fa-solid fa-cart-shopping"></i> Keranjang Kasir</span>
             <small style="background: #fef3c7; color: #b45309; padding: 2px 6px; border-radius: 4px; font-weight: bold;">Offline / Dine-In</small>
           </div>
 
-          <!-- INTEGRASI CEK MEMBER KASIR -->
           <div class="member-check-box">
             <label><i class="fa-solid fa-id-card"></i> Cek / Input WA Member</label>
             <div class="member-input-group">
@@ -282,6 +279,14 @@
 
           <div class="input-group-row">
             <input type="text" id="custName" placeholder="Dine In / Nama" value="Dine In / Nama">
+          </div>
+
+          <!-- INTEGRASI: PILIH METODE PEMBAYARAN -->
+          <div class="input-group-row">
+            <select id="metodeBayarPOS" style="width: 100%; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 10px; font-weight: bold;">
+              <option value="Cash">Cash / Tunai</option>
+              <option value="QRIS">QRIS</option>
+            </select>
           </div>
 
           <div class="cart-list" id="cartContainer">
@@ -307,12 +312,9 @@
     </div>
   </div>
 
-  <!-- ===================================== -->
-  <!-- 👤 MODUL 2: MEMBERSHIP SYSTEM         -->
-  <!-- ===================================== -->
+  <!-- MODUL 2: MEMBERSHIP SYSTEM -->
   <div id="modulMember" class="modul-page hidden">
     <div class="member-container">
-      <!-- FORM INPUT MEMBER BARU -->
       <div class="member-card">
         <h3><i class="fa-solid fa-user-plus"></i> Registrasi Member Setia</h3>
         <form onsubmit="simpanMemberBaru(event)">
@@ -330,7 +332,6 @@
         </form>
       </div>
 
-      <!-- DATABASE MEMBER -->
       <div class="member-card">
         <h3><i class="fa-solid fa-users"></i> Database Member (Loyalty 10%)</h3>
         <div style="overflow-x: auto;">
@@ -343,46 +344,36 @@
                 <th>Status Reward</th>
               </tr>
             </thead>
-            <tbody id="tblMemberBody">
-              <!-- Rendered via JS -->
-            </tbody>
+            <tbody id="tblMemberBody"></tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
 
- <!-- 📱 MODAL QRIS TOKO -->
-<div id="modalQrScanner" style="display: none; position: fixed; inset: 0; background: rgba(18,30,40,0.8); z-index: 999; align-items: center; justify-content: center;">
-  <div style="background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-    <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-qrcode"></i> QRIS Pembayaran</h3>
-    <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">Scan QRIS di bawah ini untuk melakukan pembayaran</p>
-    
-    <!-- Gambar QRIS Toko -->
-    <div style="width: 100%; padding: 10px; background: #fff; border: 2px dashed #f97316; border-radius: 12px; margin-bottom: 16px; box-sizing: border-box;">
-      <img src="https://lh3.googleusercontent.com/d/1_N38UgZgpj6zno0LGjQj74vHk4xh7x_Q" alt="QRIS Toko" style="width: 100%; height: auto; display: block; border-radius: 8px;">
+  <!-- MODAL QRIS TOKO -->
+  <div id="modalQrScanner" style="display: none; position: fixed; inset: 0; background: rgba(18,30,40,0.8); z-index: 999; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+      <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-qrcode"></i> QRIS Pembayaran</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">Scan QRIS di bawah ini untuk melakukan pembayaran</p>
+      <div style="width: 100%; padding: 10px; background: #fff; border: 2px dashed #f97316; border-radius: 12px; margin-bottom: 16px; box-sizing: border-box;">
+        <img src="https://lh3.googleusercontent.com/d/1_N38UgZgpj6zno0LGjQj74vHk4xh7x_Q" alt="QRIS Toko" style="width: 100%; height: auto; display: block; border-radius: 8px;">
+      </div>
+      <button onclick="tutupModalQR()" style="background: #334155; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">TUTUP</button>
     </div>
-
-    <button onclick="tutupModalQR()" style="background: #334155; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">
-      TUTUP
-    </button>
   </div>
-</div>
 
-  <!-- 📢 MODAL NOTIFIKASI TRANSAKSI BERHASIL -->
+  <!-- MODAL NOTIFIKASI TRANSAKSI BERHASIL -->
   <div id="modalKasirSukses" style="display: none; position: fixed; inset: 0; background-color: rgba(18, 30, 40, 0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
     <div style="background: #ffffff; width: 100%; max-width: 360px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #a7f3d0; animation: modalPop 0.3s ease-out;">
-      
-      <!-- HEADER HIJAU GRADASI -->
       <div style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); padding: 20px; text-align: center; color: #ffffff;">
         <div style="width: 54px; height: 54px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.4);">
           <i class="fa-solid fa-check" style="color: #ffffff;"></i>
         </div>
         <h3 style="font-size: 16px; font-weight: 800; margin: 0; letter-spacing: 0.5px;">Transaksi Berhasil!</h3>
-        <p style="font-size: 11px; opacity: 0.9; margin-top: 4px; font-weight: 500;">Data penjualan telah tersimpan ke sistem.</p>
+        <p style="font-size: 11px; opacity: 0.9; margin-top: 4px; font-weight: 500;">Data penjualan telah tersimpan ke sistem & Master V3.</p>
       </div>
 
-      <!-- BODY & RINGKASAN STRUK -->
       <div style="padding: 16px;">
         <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 12px; font-size: 11px; margin-bottom: 16px;">
           <div style="display: flex; justify-content: space-between; padding-bottom: 6px; border-bottom: 1px dashed #a7f3d0;">
@@ -399,7 +390,6 @@
           </div>
         </div>
 
-        <!-- TOMBOL AKSI HIJAU -->
         <button onclick="tutupModalKasir()" style="width: 100%; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: none; padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; transition: transform 0.1s ease; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
           <i class="fa-solid fa-check-circle"></i> TRANSAKSI BARU / SIAP
         </button>
@@ -407,16 +397,14 @@
     </div>
   </div>
 
-  <!-- 📌 BOTTOM NAVIGATION BAR (STYLE CIRCLE K) -->
+  <!-- BOTTOM NAVIGATION BAR -->
   <nav class="bottom-nav">
     <div class="bottom-nav-container">
-      <!-- KASIR -->
       <button onclick="switchPage('kasir')" id="navKasir" class="nav-item active">
         <i class="fa-solid fa-cash-register"></i>
         <span>Kasir</span>
       </button>
 
-      <!-- QR CODE (FLOATING) -->
       <div class="nav-qr-wrapper">
         <button onclick="bukaModalQR()" class="btn-qr-floating">
           <i class="fa-solid fa-qrcode"></i>
@@ -424,7 +412,6 @@
         <span style="font-size: 9px; font-weight: bold; color: #475569; margin-top: 2px;">Qr Code</span>
       </div>
 
-      <!-- MEMBER -->
       <button onclick="switchPage('member')" id="navMember" class="nav-item">
         <i class="fa-solid fa-id-card"></i>
         <span>Member</span>
@@ -433,56 +420,41 @@
   </nav>
 
   <script>
-    // 📲 LOGIKA PWA & INSTALL PROMPT
     let deferredPrompt;
     const btnInstallPwa = document.getElementById('btnInstallPwa');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (btnInstallPwa) {
-        btnInstallPwa.style.display = 'flex';
-      }
+      if (btnInstallPwa) btnInstallPwa.style.display = 'flex';
     });
 
     function installPWA() {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User menerima instalasi PWA');
-        }
         deferredPrompt = null;
         if (btnInstallPwa) btnInstallPwa.style.display = 'none';
       });
     }
 
-    window.addEventListener('appinstalled', () => {
-      if (btnInstallPwa) btnInstallPwa.style.display = 'none';
-      deferredPrompt = null;
-    });
-
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js') 
-          .then((reg) => console.log('SW Registered:', reg.scope))
-          .catch((err) => console.error('SW Register Error:', err));
+        navigator.serviceWorker.register('./sw.js').catch((err) => console.error('SW Error:', err));
       });
     }
     
-    // URL GOOGLE APPS SCRIPT
+    // URL GOOGLE APPS SCRIPT TOKO (CABANG 1)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxijavfFwCPC4BrH2-hYpZIN2tJuhfN4hmLo9eGRxKCkVnPGZXPF8CtXIqrzsNGUtOqmA/exec"; 
 
     let keranjang = [];
     let stateQty = {};
 
-    // LOCAL DATABASE MEMBER CACHE
     let localMembers = [
       { nama: "Budi Santoso", wa: "081234567890", stamp: 5 },
       { nama: "Siti Rahma", wa: "089876543210", stamp: 2 }
     ];
 
-    // MAPPING ACCORDION DENGAN KATEGORI BUNDLING DI DEPAN
     const KATEGORI_CONFIG = [
       { key: "bundling", title: "🔥 PAKET BUNDLING PROMO", color: "#8e44ad" },
       { key: "original", title: "Dimsum Original", color: "#f39c12" },
@@ -494,7 +466,15 @@
       { key: "lainnya", title: "Menu Lainnya", color: "#2c3e50" }
     ];
 
-    // LOGIKA PINDAH MODUL TAB
+    // INTEGRASI: AMBIL & SIMPAN PILIHAN OUTLET LOKAL
+    let currentOutlet = localStorage.getItem("selectedOutlet") || "OUT-001";
+    document.getElementById("selectOutlet").value = currentOutlet;
+
+    function gantiOutlet() {
+      currentOutlet = document.getElementById("selectOutlet").value;
+      localStorage.setItem("selectedOutlet", currentOutlet);
+    }
+
     function switchPage(modul) {
       const mKasir = document.getElementById('modulKasir');
       const mMember = document.getElementById('modulMember');
@@ -518,11 +498,9 @@
       }
     }
 
-    // SCANNER MODAL TOGGLE
     function bukaModalQR() { document.getElementById('modalQrScanner').style.display = 'flex'; }
     function tutupModalQR() { document.getElementById('modalQrScanner').style.display = 'none'; }
 
-    // INTEGRASI LOGIKA MEMBERSHIP
     function autoCekMember() {
       const wa = document.getElementById("custWA").value.trim();
       const badge = document.getElementById("memberBadgeStatus");
@@ -539,8 +517,6 @@
 
         if (found.stamp >= 5) {
           badge.innerHTML = `⭐ Member: <b>${found.nama}</b> (${found.stamp}/5 Stamp)<br><b style="color:#d97706;">🎉 Transaksi ke-6: Siap Diskon 10%!</b>`;
-          
-          // Hitung otomatis diskon 10% jika subtotal > 0
           let subtotal = keranjang.reduce((sum, item) => sum + item.subtotal, 0);
           if (subtotal > 0) {
             document.getElementById("inputDiskon").value = Math.round(subtotal * 0.1);
@@ -624,11 +600,7 @@
       };
 
       script.src = SCRIPT_URL + "?action=getStok&callback=" + callbackName + "&t=" + new Date().getTime();
-      script.onerror = function() {
-        document.getElementById("loadingMenu").innerHTML = "<p style='color:red;'>Gagal terhubung ke Google Sheets!</p>";
-      };
       document.body.appendChild(script);
-
       loadPendingOrders();
     }
 
@@ -648,7 +620,7 @@
             container.innerHTML += `
               <div class="pending-item">
                 <b>${ord.namaPelanggan}</b> (${ord.nomorWA})<br>
-                <span style="color:#555;">${ord.produk}</span><br>
+                <span style="color:#555;">${ord.detailItems}</span><br>
                 <b>Total: Rp ${Number(ord.totalHarga).toLocaleString("id-ID")}</b>
                 <div class="pending-actions">
                   <button class="btn-sm btn-acc" onclick="konfirmasiOrder(${ord.rowIndex}, 'completeOrder')">Selesaikan</button>
@@ -672,9 +644,7 @@
         body: JSON.stringify({ action: action, rowIndex: rowIndex })
       })
       .then(res => res.json())
-      .then(data => {
-        loadData();
-      });
+      .then(data => loadData());
     }
 
     function renderMenuAccordions(menuList) {
@@ -723,7 +693,7 @@
                 <button class="qty-btn" onclick="updateTempQty('${item.produk}', 1)">+</button>
               </div>
 
-              <button class="btn-tambah" style="background:${cfg.color};" onclick="tambahKeKeranjang('${item.produk}', ${item.harga})" ${item.stok <= 0 ? 'disabled' : ''}>
+              <button class="btn-tambah" style="background:${cfg.color};" onclick="tambahKeKeranjang('${item.produk}', ${item.harga}, ${item.hpp || 0})" ${item.stok <= 0 ? 'disabled' : ''}>
                 ${item.stok <= 0 ? 'HABIS' : '+ TAMBAH'}
               </button>
             </div>
@@ -740,17 +710,13 @@
       const targetGroup = document.getElementById(id);
 
       allGroups.forEach(group => {
-        if (group !== targetGroup) {
-          group.classList.add('collapsed');
-        }
+        if (group !== targetGroup) group.classList.add('collapsed');
       });
 
       targetGroup.classList.toggle('collapsed');
     }
 
-    function sanitizeId(str) {
-      return str.replace(/[^a-zA-Z0-9]/g, "_");
-    }
+    function sanitizeId(str) { return str.replace(/[^a-zA-Z0-9]/g, "_"); }
 
     function updateTempQty(nama, delta) {
       if (!stateQty[nama]) stateQty[nama] = 1;
@@ -758,7 +724,8 @@
       document.getElementById("inputQty_" + sanitizeId(nama)).value = stateQty[nama];
     }
 
-    function tambahKeKeranjang(nama, harga) {
+    // INTEGRASI: MENAMBAHKAN PARAMETER HPP
+    function tambahKeKeranjang(nama, harga, hpp) {
       const qtyPilih = stateQty[nama] || 1;
       const ada = keranjang.find(i => i.produk === nama);
 
@@ -766,13 +733,13 @@
         ada.qty += qtyPilih;
         ada.subtotal = ada.qty * harga;
       } else {
-        keranjang.push({ produk: nama, harga: harga, qty: qtyPilih, subtotal: harga * qtyPilih });
+        keranjang.push({ produk: nama, harga: harga, hpp: hpp || (harga * 0.5), qty: qtyPilih, subtotal: harga * qtyPilih });
       }
 
       stateQty[nama] = 1;
       document.getElementById("inputQty_" + sanitizeId(nama)).value = 1;
       renderCart();
-      autoCekMember(); // Re-evaluate diskon jika member aktif
+      autoCekMember();
     }
 
     function hapusItem(index) {
@@ -813,27 +780,31 @@
       document.getElementById("txtTotalBayar").innerText = "Rp " + totalBayar.toLocaleString("id-ID");
     }
 
+    // INTEGRASI: PROSES BAYAR DENGAN MENGIRIM PARAMETER MULTI-OUTLET KE CODE.GS
     function prosesBayar() {
       if (keranjang.length === 0) return alert("Keranjang masih kosong!");
 
       const pelanggan = document.getElementById("custName").value || "Dine In / Nama";
       const nomorWA = document.getElementById("custWA").value || "-";
       const diskon = Number(document.getElementById("inputDiskon").value) || 0;
+      const metodeBayar = document.getElementById("metodeBayarPOS").value;
 
       let subtotal = keranjang.reduce((sum, item) => sum + item.subtotal, 0);
       let totalBayar = Math.max(0, subtotal - diskon);
 
-      // Tambahkan Logika Stamp Member jika terdaftar & total belanja >= Rp 20.000
       const member = localMembers.find(m => m.wa === nomorWA);
       if (member) {
         if (member.stamp >= 5) {
-          member.stamp = 0; // Reset stamp setelah dapat diskon ke-6
+          member.stamp = 0;
         } else if (totalBayar >= 20000) {
-          member.stamp += 1; // +1 Stamp jika belanja min 20rb
+          member.stamp += 1;
         }
       }
 
       const payload = {
+        outlet_id: currentOutlet,
+        kasirNama: "Kasir Utam",
+        pembayaran: metodeBayar,
         namaPelanggan: pelanggan,
         nomorWA: nomorWA,
         items: keranjang,
