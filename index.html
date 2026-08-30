@@ -235,7 +235,7 @@
     </div>
   </header>
 
-  <!-- MODUL 1: KASIR Utama -->
+  <!-- MODUL 1: KASIR UTAMA -->
   <div id="modulKasir" class="modul-page">
     <div class="main-container">
       <div class="left-panel">
@@ -281,7 +281,6 @@
             <input type="text" id="custName" placeholder="Dine In / Nama" value="Dine In / Nama">
           </div>
 
-          <!-- INTEGRASI: PILIH METODE PEMBAYARAN -->
           <div class="input-group-row">
             <select id="metodeBayarPOS" style="width: 100%; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 10px; font-weight: bold;">
               <option value="Cash">Cash / Tunai</option>
@@ -444,8 +443,29 @@
       });
     }
     
-    // URL GOOGLE APPS SCRIPT TOKO (CABANG 1)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxijavfFwCPC4BrH2-hYpZIN2tJuhfN4hmLo9eGRxKCkVnPGZXPF8CtXIqrzsNGUtOqmA/exec"; 
+    // Pemetaan URL Web App Apps Script Masing-masing Cabang
+    const OUTLET_URLS = {
+      "OUT-001": "https://script.google.com/macros/s/AKfycbxijavfFwCPC4BrH2-hYpZIN2tJuhfN4hmLo9eGRxKCkVnPGZXPF8CtXIqrzsNGUtOqmA/exec", // Kayutangi
+      "OUT-002": "PASTE_URL_WEB_APP_CABANG_VETERAN_DISINI"                                                                     // Veteran
+    };
+
+    // Ambil outlet yang tersimpan atau default ke OUT-001
+    let currentOutlet = localStorage.getItem("selectedOutlet") || "OUT-001";
+    document.getElementById("selectOutlet").value = currentOutlet;
+    let SCRIPT_URL = OUTLET_URLS[currentOutlet] || OUTLET_URLS["OUT-001"];
+
+    function gantiOutlet() {
+      currentOutlet = document.getElementById("selectOutlet").value;
+      localStorage.setItem("selectedOutlet", currentOutlet);
+      
+      // Update target URL ke backend cabang yang aktif
+      SCRIPT_URL = OUTLET_URLS[currentOutlet] || OUTLET_URLS["OUT-001"];
+      
+      // Reload stok & menu cabang tersebut
+      document.getElementById("loadingMenu").style.display = "block";
+      document.getElementById("accordionContainer").innerHTML = "";
+      loadData();
+    }
 
     let keranjang = [];
     let stateQty = {};
@@ -465,15 +485,6 @@
       { key: "tahu", title: "Tahu Bakso Goreng", color: "#795548" },
       { key: "lainnya", title: "Menu Lainnya", color: "#2c3e50" }
     ];
-
-    // INTEGRASI: AMBIL & SIMPAN PILIHAN OUTLET LOKAL
-    let currentOutlet = localStorage.getItem("selectedOutlet") || "OUT-001";
-    document.getElementById("selectOutlet").value = currentOutlet;
-
-    function gantiOutlet() {
-      currentOutlet = document.getElementById("selectOutlet").value;
-      localStorage.setItem("selectedOutlet", currentOutlet);
-    }
 
     function switchPage(modul) {
       const mKasir = document.getElementById('modulKasir');
@@ -724,7 +735,6 @@
       document.getElementById("inputQty_" + sanitizeId(nama)).value = stateQty[nama];
     }
 
-    // INTEGRASI: MENAMBAHKAN PARAMETER HPP
     function tambahKeKeranjang(nama, harga, hpp) {
       const qtyPilih = stateQty[nama] || 1;
       const ada = keranjang.find(i => i.produk === nama);
@@ -780,7 +790,6 @@
       document.getElementById("txtTotalBayar").innerText = "Rp " + totalBayar.toLocaleString("id-ID");
     }
 
-    // INTEGRASI: PROSES BAYAR DENGAN MENGIRIM PARAMETER MULTI-OUTLET KE CODE.GS
     function prosesBayar() {
       if (keranjang.length === 0) return alert("Keranjang masih kosong!");
 
@@ -803,7 +812,7 @@
 
       const payload = {
         outlet_id: currentOutlet,
-        kasirNama: "Kasir Utam",
+        kasirNama: "Kasir Utama",
         pembayaran: metodeBayar,
         namaPelanggan: pelanggan,
         nomorWA: nomorWA,
