@@ -54,7 +54,6 @@
     
     .btn-header { background: #3498db; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; }
 
-    /* INTEGRASI MULTI-OUTLET: STYLE DROPDOWN */
     .select-outlet {
       background: #e67e22;
       color: white;
@@ -67,7 +66,6 @@
       outline: none;
     }
 
-    /* TOMBOL INSTALL PWA */
     .btn-install-pwa {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
@@ -88,7 +86,7 @@
     .modul-page { width: 100%; }
     .modul-page.hidden { display: none !important; }
 
-    /* LAYOUT MAIN KASIR - BERDAMPINGAN */
+    /* LAYOUT MAIN KASIR */
     .main-container { 
       display: flex; 
       flex-direction: row; 
@@ -101,31 +99,12 @@
       align-items: flex-start;
     }
 
-    /* KIRI: MENU (60% Lebar) */
-    .left-panel { 
-      flex: 6; 
-      min-width: 0; 
-    }
+    .left-panel { flex: 6; min-width: 0; }
+    .right-panel { flex: 4; display: flex; flex-direction: column; gap: 10px; min-width: 0; position: static; }
 
-    /* KANAN: KERANJANG (40% Lebar) */
-    .right-panel { 
-      flex: 4; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 10px; 
-      min-width: 0; 
-      position: static; 
-    }
-
-    /* RESPONSIVE LAYAR HP (< 768px) ATAS-BAWAH */
     @media (max-width: 500px) {
-      .main-container { 
-        flex-direction: column; 
-      }
-      .left-panel, .right-panel { 
-        width: 100%; 
-        flex: none; 
-      }
+      .main-container { flex-direction: column; }
+      .left-panel, .right-panel { width: 100%; flex: none; }
     }
 
     /* STOK SUMMARY */
@@ -273,7 +252,6 @@
       <span>Live Sync Dapur</span>
     </div>
     <div class="header-controls">
-      <!-- INTEGRASI MULTI-OUTLET: DROPDOWN CABANG -->
       <select id="selectOutlet" class="select-outlet" onchange="gantiOutlet()">
         <option value="OUT-001">📍 Kelayan</option>
         <option value="OUT-002">📍 Veteran</option>
@@ -294,7 +272,7 @@
   <!-- MODUL 1: KASIR Utama -->
   <div id="modulKasir" class="modul-page">
     <div class="main-container">
-      <!-- LEFT PANEL: MENU (KIRI 60%) -->
+      <!-- LEFT PANEL: MENU -->
       <div class="left-panel">
         <div class="stok-bar">
           <h3><i class="fa-solid fa-utensils"></i> Kartu Menu (Offline / Dine In)</h3>
@@ -305,13 +283,11 @@
           <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Memuat Menu & Stok Dapur...
         </div>
 
-        <!-- ACCORDION CONTAINERS -->
         <div id="accordionContainer"></div>
       </div>
 
-      <!-- RIGHT PANEL: ONLINE & KERANJANG (KANAN 40%) -->
+      <!-- RIGHT PANEL: ONLINE & KERANJANG -->
       <div class="right-panel">
-        <!-- PESANAN ONLINE PENDING -->
         <div class="panel-card" style="background: #fffdf5; border: 1px solid #fef3c7;">
           <div class="panel-title" style="color: #b45309;">
             <span><i class="fa-solid fa-bolt"></i> Pesanan Online <span class="online-badge" id="onlineCount" style="background: #f59e0b; color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px;">0</span></span>
@@ -322,14 +298,12 @@
           </div>
         </div>
         
-        <!-- KERANJANG KASIR -->
         <div class="panel-card">
           <div class="panel-title">
             <span><i class="fa-solid fa-cart-shopping"></i> Keranjang Kasir</span>
             <small style="background: #fef3c7; color: #b45309; padding: 2px 6px; border-radius: 4px; font-weight: bold;">Offline / Dine-In</small>
           </div>
 
-          <!-- INTEGRASI CEK MEMBER KASIR DENGAN AUTOCOMPLETE DROPDOWN -->
           <div class="member-check-box">
             <label><i class="fa-solid fa-id-card"></i> Cari Member (Nama / WA)</label>
             <div class="member-input-group">
@@ -338,7 +312,6 @@
             </div>
             
             <div id="memberSuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; max-height: 160px; overflow-y: auto;"></div>
-
             <div id="memberBadgeStatus" class="member-badge-status"></div>
           </div>
 
@@ -346,7 +319,6 @@
             <input type="text" id="custName" placeholder="Dine In / Nama" value="Dine In / Nama">
           </div>
 
-          <!-- INTEGRASI MULTI-OUTLET: METODE PEMBAYARAN -->
           <div class="input-group-row">
             <select id="metodeBayarPOS" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 11px; font-weight: bold;">
               <option value="Cash">Cash / Tunai</option>
@@ -512,11 +484,8 @@
   function gantiOutlet() {
     currentOutlet = document.getElementById("selectOutlet").value;
     localStorage.setItem("selectedOutlet", currentOutlet);
-    
-    // Switch URL sesuai cabang
     SCRIPT_URL = OUTLET_URLS[currentOutlet] || OUTLET_URLS["OUT-001"];
     
-    // Reset & Muat Ulang Data Cabang Baru
     document.getElementById("loadingMenu").style.display = "block";
     document.getElementById("accordionContainer").innerHTML = "";
     loadData();
@@ -531,9 +500,10 @@
     { key: "original", title: "Dimsum Original", color: "#f39c12" },
     { key: "mentai", title: "Dimsum Mentai", color: "#e67e22" },
     { key: "keju", title: "Dimsum Keju", color: "#f1c40f" },
-    { key: "mix", title: "Dimsum Mix", color: "#16a085" },
+    { key: "mix", title: "Dimsum Kukus Mix", color: "#16a085" },
     { key: "goreng", title: "Dimsum Goreng Paket", color: "#c0392b" },
     { key: "tahu", title: "Tahu Bakso Goreng", color: "#795548" },
+    { key: "satuan", title: "Dimsum Satuan", color: "#2980b9" },
     { key: "lainnya", title: "Menu Lainnya", color: "#2c3e50" }
   ];
 
@@ -598,20 +568,26 @@
       return;
     }
 
-    const matches = serverMembers.filter(m => 
-      m.nama.toLowerCase().includes(input) || String(m.wa).includes(input)
-    );
+    const matches = serverMembers.filter(m => {
+      const nama = String(m.nama || m.namaMember || "").toLowerCase();
+      const wa = String(m.wa || m.nomorWA || "");
+      return nama.includes(input) || wa.includes(input);
+    });
 
     if (matches.length > 0) {
       boxSuggest.innerHTML = "";
       matches.forEach(m => {
+        const nama = m.nama || m.namaMember || "-";
+        const wa = m.wa || m.nomorWA || "-";
+        const stamp = Number(m.stamp || m.stampTotal || 0);
+
         boxSuggest.innerHTML += `
-          <div onclick="pilihMember('${m.nama}', '${m.wa}')" style="padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-size: 11px; display: flex; justify-content: space-between; align-items: center;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+          <div onclick="pilihMember('${nama}', '${wa}')" style="padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-size: 11px; display: flex; justify-content: space-between; align-items: center;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
             <div>
-              <b>${m.nama}</b> <small style="color: #64748b;">(${m.wa})</small>
+              <b>${nama}</b> <small style="color: #64748b;">(${wa})</small>
             </div>
-            <span style="font-size: 9px; font-weight: bold; padding: 2px 5px; border-radius: 4px; ${m.stamp >= 5 ? 'background:#dcfce7; color:#15803d;' : 'background:#f1f5f9; color:#64748b;'}">
-              ${m.stamp}/5 Stamp
+            <span style="font-size: 9px; font-weight: bold; padding: 2px 5px; border-radius: 4px; ${stamp >= 5 ? 'background:#dcfce7; color:#15803d;' : 'background:#f1f5f9; color:#64748b;'}">
+              ${stamp}/5 Stamp
             </span>
           </div>
         `;
@@ -637,19 +613,20 @@
 
   function terapkanStatusMember(nama, wa) {
     const badge = document.getElementById("memberBadgeStatus");
-    const found = serverMembers.find(m => m.wa === wa);
+    const found = serverMembers.find(m => String(m.wa || m.nomorWA).trim() === String(wa).trim());
 
     if (found) {
+      const stamp = Number(found.stamp || found.stampTotal || 0);
       badge.style.display = "block";
 
-      if (found.stamp >= 5) {
+      if (stamp >= 5) {
         badge.style.background = "#dcfce7";
         badge.style.color = "#15803d";
-        badge.innerHTML = `⭐ Member: <b>${found.nama}</b> (${found.stamp}/5 Stamp)<br><b style="color:#d97706;">🎉 Transaksi ke-6: OTOMATIS DISKON 10%!</b>`;
+        badge.innerHTML = `⭐ Member: <b>${found.nama || found.namaMember}</b> (${stamp}/5 Stamp)<br><b style="color:#d97706;">🎉 Transaksi ke-6: OTOMATIS DISKON 10%!</b>`;
       } else {
         badge.style.background = "#f1f5f9";
         badge.style.color = "#1e293b";
-        badge.innerHTML = `⭐ Member: <b>${found.nama}</b> (${found.stamp}/5 Stamp)<br><i>Kumpulkan ${5 - found.stamp} stamp lagi untuk klaim diskon 10%</i>`;
+        badge.innerHTML = `⭐ Member: <b>${found.nama || found.namaMember}</b> (${stamp}/5 Stamp)<br><i>Kumpulkan ${5 - stamp} stamp lagi untuk klaim diskon 10%</i>`;
       }
     }
 
@@ -669,12 +646,18 @@
     const nama = document.getElementById("mNama").value.trim();
     const wa = document.getElementById("mWA").value.trim();
 
-    if (serverMembers.some(m => m.wa === wa)) {
+    if (serverMembers.some(m => String(m.wa || m.nomorWA).trim() === wa)) {
       alert("Nomor WA sudah terdaftar sebagai Member!");
       return;
     }
 
-    const payload = { action: "simpanMember", nama: nama, wa: wa };
+    const payload = { 
+      action: "simpanMember", 
+      nama: nama, 
+      namaPelanggan: nama,
+      wa: wa, 
+      nomorWA: wa 
+    };
 
     fetch(SCRIPT_URL, {
       method: "POST",
@@ -683,10 +666,10 @@
       body: JSON.stringify(payload)
     })
     .then(() => {
-      alert(`Member ${nama} berhasil didaftarkan ke Google Sheets!`);
+      alert(`Member ${nama} berhasil didaftarkan ke Master Database!`);
       document.getElementById("mNama").value = "";
       document.getElementById("mWA").value = "";
-      setTimeout(loadMembers, 1000);
+      setTimeout(loadMembers, 1200);
     })
     .catch(() => alert("Gagal menyimpan member ke Google Sheets."));
   }
@@ -695,18 +678,22 @@
     const tbody = document.getElementById("tblMemberBody");
     tbody.innerHTML = "";
     
-    if (serverMembers.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Belum ada data member di Google Sheets.</td></tr>`;
+    if (!serverMembers || serverMembers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Belum ada data member di Google Sheets Master.</td></tr>`;
       return;
     }
 
     serverMembers.forEach(m => {
-      const isReady = m.stamp >= 5;
+      const nama = m.nama || m.namaMember || "-";
+      const wa = m.wa || m.nomorWA || "-";
+      const stamp = Number(m.stamp || m.stampTotal || 0);
+      const isReady = stamp >= 5;
+
       tbody.innerHTML += `
         <tr>
-          <td><b>${m.nama}</b></td>
-          <td>${m.wa}</td>
-          <td>⭐ ${m.stamp}/5</td>
+          <td><b>${nama}</b></td>
+          <td>${wa}</td>
+          <td>⭐ ${stamp}/5</td>
           <td>
             <span style="padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 9px; ${isReady ? 'background:#dcfce7; color:#15803d;' : 'background:#f1f5f9; color:#64748b;'}">
               ${isReady ? '🎉 Diskon Ready (Trx ke-6)' : 'Pengumpulan'}
@@ -717,8 +704,11 @@
     });
   }
 
-  function deteksiKategori(namaProduk) {
-    const lower = namaProduk.toLowerCase();
+  function deteksiKategori(namaProduk, kategoriSpreadsheet) {
+    const lower = (namaProduk || "").toLowerCase();
+    const katSpreadsheet = (kategoriSpreadsheet || "").toLowerCase();
+
+    if (katSpreadsheet.includes("satuan") || lower.includes("pcs")) return "satuan";
     if (lower.includes("ngemil") || lower.includes("duo") || lower.includes("sultan") || lower.includes("sekeluarga") || lower.includes("bundling")) return "bundling";
     if (lower.includes("goreng")) return "goreng";
     if (lower.includes("tahu") || lower.includes("bakso")) return "tahu";
@@ -772,7 +762,7 @@
           container.innerHTML += `
             <div style="background:#ffffff; border:1px solid #fde68a; padding:8px; border-radius:6px; margin-bottom:6px; font-size:11px;">
               <b>${ord.namaPelanggan}</b> (${ord.nomorWA})<br>
-              <span style="color:#555;">${ord.produk}</span><br>
+              <span style="color:#555;">${ord.detailItems || ord.produk}</span><br>
               <b>Total: Rp ${Number(ord.totalHarga).toLocaleString("id-ID")}</b>
               <div style="display:flex; gap:4px; margin-top:4px;">
                 <button style="background:#059669; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:10px;" onclick="konfirmasiOrder(${ord.rowIndex}, 'completeOrder')">Selesaikan</button>
@@ -809,7 +799,8 @@
     KATEGORI_CONFIG.forEach(k => grouped[k.key] = []);
 
     menuList.forEach(item => {
-      const catKey = deteksiKategori(item.produk);
+      const namaItem = item.produk || item.nama || item.nama_produk || "";
+      const catKey = deteksiKategori(namaItem, item.kategori);
       if (grouped[catKey]) grouped[catKey].push(item);
       else grouped["lainnya"].push(item);
     });
@@ -830,25 +821,32 @@
       `;
 
       items.forEach(item => {
-        if (!stateQty[item.produk]) stateQty[item.produk] = 1;
+        const namaItem = item.produk || item.nama || item.nama_produk || "-";
+        const hargaItem = Number(item.harga || item.harga_jual || 0);
+        const hargaCoret = item.hargaCoret ? Number(item.hargaCoret) : null;
+        const deskripsi = item.deskripsi || "";
+
+        if (!stateQty[namaItem]) stateQty[namaItem] = 1;
 
         html += `
           <div class="card-item">
             <div class="card-top">
-              <span class="item-title">${item.produk}</span>
-              <span class="item-badge">${item.isiPcs > 1 ? 'Isi ' + item.isiPcs + ' pcs' : 'Porsi'}</span>
+              <span class="item-title">${namaItem}</span>
+              <span class="item-badge">${deskripsi ? deskripsi : (item.isiPcs > 1 ? 'Isi ' + item.isiPcs + ' pcs' : 'Porsi')}</span>
             </div>
-            <div class="item-price">Rp ${item.harga.toLocaleString("id-ID")}</div>
+            <div class="item-price">
+              Rp ${hargaItem.toLocaleString("id-ID")}
+              ${hargaCoret ? `<small style="text-decoration:line-through; color:#94a3b8; font-size:10px; margin-left:4px;">Rp ${hargaCoret.toLocaleString("id-ID")}</small>` : ''}
+            </div>
             <div class="item-stok">Maks: ${item.stok}</div>
 
             <div class="qty-control">
-              <button class="qty-btn" onclick="updateTempQty('${item.produk}', -1)">-</button>
-              <input type="text" class="qty-input" id="inputQty_${sanitizeId(item.produk)}" value="${stateQty[item.produk]}" readonly>
-              <button class="qty-btn" onclick="updateTempQty('${item.produk}', 1)">+</button>
+              <button class="qty-btn" onclick="updateTempQty('${namaItem}', -1)">-</button>
+              <input type="text" class="qty-input" id="inputQty_${sanitizeId(namaItem)}" value="${stateQty[namaItem]}" readonly>
+              <button class="qty-btn" onclick="updateTempQty('${namaItem}', 1)">+</button>
             </div>
 
-            <!-- INTEGRASI MULTI-OUTLET: MENGIRIM PARAMETER HPP KE KERANJANG -->
-            <button class="btn-tambah" style="background:${cfg.color};" onclick="tambahKeKeranjang('${item.produk}', ${item.harga}, ${item.hpp || 0})" ${item.stok <= 0 ? 'disabled style="opacity:0.5;"' : ''}>
+            <button class="btn-tambah" style="background:${cfg.color};" onclick="tambahKeKeranjang('${namaItem}', ${hargaItem}, ${item.hpp || 0})" ${item.stok <= 0 ? 'disabled style="opacity:0.5;"' : ''}>
               ${item.stok <= 0 ? 'HABIS' : '+ TAMBAH'}
             </button>
           </div>
@@ -883,7 +881,6 @@
     document.getElementById("inputQty_" + sanitizeId(nama)).value = stateQty[nama];
   }
 
-  // INTEGRASI MULTI-OUTLET: MENYIMPAN HPP ITEM
   function tambahKeKeranjang(nama, harga, hpp) {
     const qtyPilih = stateQty[nama] || 1;
     const ada = keranjang.find(i => i.produk === nama);
@@ -938,9 +935,9 @@
     });
 
     const wa = document.getElementById("custWA").value.trim();
-    const foundMember = serverMembers.find(m => m.wa === wa);
+    const foundMember = serverMembers.find(m => String(m.wa || m.nomorWA).trim() === wa);
     
-    if (foundMember && foundMember.stamp >= 5) {
+    if (foundMember && Number(foundMember.stamp || foundMember.stampTotal || 0) >= 5) {
       const autoDiskon = Math.round(subtotal * 0.1);
       document.getElementById("inputDiskon").value = autoDiskon;
     } else {
@@ -954,7 +951,6 @@
     document.getElementById("txtTotalBayar").innerText = "Rp " + totalBayar.toLocaleString("id-ID");
   }
 
-  // INTEGRASI MULTI-OUTLET: MENGIRIM PARAMETER outlet_id & pembayaran
   function prosesBayar() {
     if (keranjang.length === 0) return alert("Keranjang masih kosong!");
 
